@@ -1,5 +1,6 @@
 ---
-description: "Security auditor for vulnerabilities. Runs OWASP and supply chain checks."
+name: security-auditor
+description: "Security auditor for vulnerabilities. Runs OWASP and supply chain checks. Invoke when touching auth, access control, dependencies, or user input."
 allowed-tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
 ---
 

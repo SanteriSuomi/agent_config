@@ -1,5 +1,6 @@
 ---
-description: "Code reviewer for quality, conventions, and architecture alignment."
+name: code-reviewer
+description: "Code reviewer for quality, conventions, and architecture alignment. Runs static analysis and convention checks. Invoke after significant changes or before commits."
 allowed-tools: Read, Grep, Glob, Bash, WebFetch
 ---
 
