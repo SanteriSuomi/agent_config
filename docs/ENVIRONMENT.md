@@ -59,6 +59,7 @@ Single source of truth via symlinks:
 
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
+| `browser-automation` | Headless browser automation via agent-browser CLI | "go to [url]", "click", "fill form", "screenshot", "scrape" |
 | `continuous-learning` | Extract reusable knowledge from sessions | Auto-triggers on discoveries |
 | `context7-api` | Up-to-date library documentation | "docs for [library]" |
 

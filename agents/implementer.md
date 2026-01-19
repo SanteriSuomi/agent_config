@@ -134,7 +134,7 @@ Spawn `security-auditor` if ANY of these areas were touched:
 For projects with UI:
 
 1. Start the application (if not already running)
-2. Test new functionality manually (browser if available), via test scripts, or API calls
+2. Test functionality via browser (if available), test scripts, or API calls
 3. Check for errors in console/logs
 4. Verify behavior matches requirements
 
