@@ -1,6 +1,6 @@
 ---
 name: browser-automation
-description: 'Browser automation with persistent page state. Use when users ask to navigate websites, fill forms, take screenshots, extract web data, test web apps, or automate browser workflows. Trigger phrases: "go to [url]", "open website", "visit", "browse to", "click on", "fill out the form", "submit form", "take a screenshot", "scrape", "web scraping", "automate", "test the website", "log into", "interact with page", "check element", "extract from page".'
+description: 'Browser automation with persistent page state. Use proactively when relevant (e.g., testing web app features during development, verifying UI changes, E2E testing). Also use when users ask to navigate websites, fill forms, take screenshots, extract web data, or automate browser workflows. Triggers: "go to [url]", "open website", "visit", "click on", "fill form", "screenshot", "scrape", "test the website", "log into".'
 allowed-tools: Bash(agent-browser:*)
 source: https://github.com/vercel-labs/agent-browser/blob/main/skills/agent-browser/SKILL.md
 last-synced: 2026-01-19

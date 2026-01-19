@@ -2,7 +2,7 @@
 name: spec-interviewer
 type: subagent
 mode: subagent
-description: 'Interactive requirements refinement through structured Q&A. Outputs SPEC.md with MoSCoW requirements. Invoke when starting new features or clarifying ambiguous requirements.'
+description: 'Interactive requirements refinement through structured Q&A. Outputs SPEC.md with MoSCoW requirements. Invoke proactively when starting new features or when requirements are ambiguous.'
 allowed-tools: Read, Write, Glob, Grep, WebSearch
 tools:
   read: true

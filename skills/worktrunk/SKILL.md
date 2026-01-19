@@ -1,6 +1,6 @@
 ---
 name: worktrunk
-description: "Git worktree management for parallel agent workflows."
+description: "Git worktree management for parallel agent workflows. Use proactively when parallel work streams are needed or when isolating experimental changes. Also use when users ask about worktrees, parallel branches, or isolated workspaces."
 ---
 
 # Worktrunk

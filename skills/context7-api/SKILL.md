@@ -1,6 +1,6 @@
 ---
 name: context7-api
-description: "Context7 API for retrieving up-to-date library documentation. Search libraries, fetch code snippets and docs. Invoke when needing current documentation for libraries/frameworks. Trigger phrases: 'how do I use [library]', 'docs for [library]', '[library] documentation', 'show me examples of', 'what is the API for', 'latest [library] syntax'."
+description: "Context7 API for up-to-date library documentation. Use proactively when working with unfamiliar libraries or APIs, or when implementation requires current docs. Also use when users ask for docs, examples, or API references. Triggers: 'how do I use [library]', 'docs for', '[library] documentation', 'show me examples', 'what is the API for'."
 ---
 
 # Context7 API

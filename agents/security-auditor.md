@@ -2,7 +2,7 @@
 name: security-auditor
 type: subagent
 mode: subagent
-description: "Security auditor for vulnerabilities. Runs OWASP and supply chain checks. Invoke when touching auth, access control, dependencies, or user input."
+description: "Security auditor for vulnerabilities. Runs OWASP and supply chain checks. Invoke proactively when touching auth, access control, dependencies, or user input."
 allowed-tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
 tools:
   read: true

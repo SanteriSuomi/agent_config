@@ -2,7 +2,7 @@
 name: researcher
 type: subagent
 mode: subagent
-description: "Research agent for documentation, best practices, library APIs, and codebase patterns. Outputs findings to RESEARCH.md."
+description: "Research agent for documentation, best practices, library APIs, and codebase patterns. Outputs findings to RESEARCH.md. Invoke proactively before implementing unfamiliar features or when debugging complex issues."
 allowed-tools: WebSearch, WebFetch, Glob, Grep, Read, Bash, Write
 tools:
   read: true

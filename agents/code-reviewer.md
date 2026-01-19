@@ -2,7 +2,7 @@
 name: code-reviewer
 type: subagent
 mode: subagent
-description: "Code reviewer for quality, conventions, and architecture alignment. Runs static analysis and convention checks. Invoke after significant changes or before commits."
+description: "Code reviewer for quality, conventions, and architecture alignment. Runs static analysis and convention checks. Invoke proactively after significant changes or before commits."
 allowed-tools: Read, Grep, Glob, Bash, WebFetch
 tools:
   read: true

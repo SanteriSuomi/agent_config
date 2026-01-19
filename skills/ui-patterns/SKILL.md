@@ -1,6 +1,6 @@
 ---
 name: ui-patterns
-description: "UI build patterns and constraints. Activate when building components, forms, layouts."
+description: "UI build patterns and constraints. Use proactively when building components, forms, layouts, or any frontend work. Also use when users ask about design tokens, component patterns, or UI guidelines. Triggers: build component, create form, layout, UI work, frontend."
 ---
 
 # UI Patterns

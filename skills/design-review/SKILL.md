@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: "UI validation for accessibility and visual consistency. Run after building components."
+description: "UI validation for accessibility and visual consistency. Use proactively after building or modifying UI components, before commits with UI changes, or when reviewing PRs. Also use when users ask to review UI, check accessibility, audit design, validate component."
 ---
 
 # Design Review
