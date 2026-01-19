@@ -1,7 +1,19 @@
 ---
 name: implementer
+type: subagent
+mode: subagent
 description: 'Autonomous task/feature implementer. Handles complete implementations from backend to frontend with tests and verification. Works standalone or orchestrated by ace-orchestrator.'
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, TodoWrite, Task
+tools:
+  read: true
+  write: true
+  edit: true
+  glob: true
+  grep: true
+  bash: true
+  websearch: true
+  webfetch: true
+  task: true
 ---
 
 # Implementer

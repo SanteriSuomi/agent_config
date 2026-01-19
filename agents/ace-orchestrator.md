@@ -1,7 +1,15 @@
 ---
 name: ace-orchestrator
+type: subagent
+mode: subagent
 description: 'ACE-FCA workflow orchestrator. Chains research → plan → implement with artifact handoffs. Use for complex features requiring research and structured implementation.'
 allowed-tools: Read, Write, Glob, Grep, Task, TodoWrite
+tools:
+  read: true
+  write: true
+  glob: true
+  grep: true
+  task: true
 ---
 
 # ACE Orchestrator

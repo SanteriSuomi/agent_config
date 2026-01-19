@@ -1,276 +1,250 @@
 ---
 name: browser-automation
-description: "Browser automation with persistent page state. Use when users ask to navigate websites, fill forms, take screenshots, extract web data, test web apps, or automate browser workflows. Trigger phrases include \"go to [url]\", \"click on\", \"fill out the form\", \"take a screenshot\", \"scrape\", \"automate\", \"test the website\", \"log into\", or any browser interaction request."
-source: https://github.com/vercel-labs/agent-browser
+description: 'Browser automation with persistent page state. Use when users ask to navigate websites, fill forms, take screenshots, extract web data, test web apps, or automate browser workflows. Trigger phrases include "go to [url]", "click on", "fill out the form", "take a screenshot", "scrape", "automate", "test the website", "log into", or any browser interaction request.'
+allowed-tools: Bash(agent-browser:*)
+source: https://github.com/vercel-labs/agent-browser/blob/main/skills/agent-browser/SKILL.md
 ---
 
-# Browser Automation (agent-browser)
+# Browser Automation with agent-browser
 
-Headless browser automation CLI for AI agents. Fast Rust CLI with Node.js fallback.
-
-## Installation
+## Quick start
 
 ```bash
-npm install -g agent-browser && agent-browser install
+agent-browser open <url>        # Navigate to page
+agent-browser snapshot -i       # Get interactive elements with refs
+agent-browser click @e1         # Click element by ref
+agent-browser fill @e2 "text"   # Fill input by ref
+agent-browser close             # Close browser
 ```
 
-## Core Workflow
+## Core workflow
 
-1. **Navigate** → `agent-browser open <url>`
-2. **Snapshot** → `agent-browser snapshot -i` (get refs like @e1, @e2)
-3. **Interact** → `agent-browser click @e1` (use refs)
-4. **Re-snapshot** → After page changes, snapshot again for new refs
+1. Navigate: `agent-browser open <url>`
+2. Snapshot: `agent-browser snapshot -i` (returns elements with refs like `@e1`, `@e2`)
+3. Interact using refs from the snapshot
+4. Re-snapshot after navigation or significant DOM changes
 
-**Always use refs (@e1, @e2) for deterministic element selection.**
-
-## Quick Reference
+## Commands
 
 ### Navigation
-
-| Command | Description |
-|---------|-------------|
-| `open <url>` | Navigate to URL |
-| `back` | Go back |
-| `forward` | Go forward |
-| `reload` | Refresh page |
-| `close` | Close browser |
-
-### Snapshot (Get Element Refs)
-
 ```bash
-agent-browser snapshot           # Full accessibility tree
-agent-browser snapshot -i        # Interactive elements only (recommended)
-agent-browser snapshot -i -c     # Interactive + compact
-agent-browser snapshot -d 5      # Limit depth to 5
-agent-browser snapshot -s "#main" # Scope to selector
+agent-browser open <url>      # Navigate to URL
+agent-browser back            # Go back
+agent-browser forward         # Go forward
+agent-browser reload          # Reload page
+agent-browser close           # Close browser
 ```
 
-**Output contains refs like `@e1`, `@e2` - use these for interactions.**
-
-### Interactions
-
-| Command | Description |
-|---------|-------------|
-| `click @e1` | Click element |
-| `dblclick @e1` | Double-click |
-| `fill @e1 "text"` | Clear and fill input |
-| `type @e1 "text"` | Type into field (append) |
-| `press Enter` | Press key |
-| `hover @e1` | Hover over element |
-| `select @e1 "value"` | Select dropdown option |
-| `check @e1` | Check checkbox |
-| `uncheck @e1` | Uncheck checkbox |
-| `scroll down 500` | Scroll down 500px |
-| `scrollintoview @e1` | Scroll element into view |
-| `upload @e1 /path/to/file` | Upload file |
-| `drag @e1 @e2` | Drag from e1 to e2 |
-
-### Information Retrieval
-
-| Command | Description |
-|---------|-------------|
-| `get text @e1` | Get text content |
-| `get html @e1` | Get innerHTML |
-| `get value @e1` | Get input value |
-| `get attr @e1 href` | Get attribute |
-| `get title` | Page title |
-| `get url` | Current URL |
-| `get count ".item"` | Count elements |
-| `get box @e1` | Bounding box coordinates |
-
-### State Checks
-
-| Command | Description |
-|---------|-------------|
-| `is visible @e1` | Check visibility |
-| `is enabled @e1` | Check if interactive |
-| `is checked @e1` | Check checkbox state |
-
-### Wait Conditions
-
+### Snapshot (page analysis)
 ```bash
-agent-browser wait @e1              # Wait for element
-agent-browser wait 2000             # Wait 2 seconds
-agent-browser wait --text "Success" # Wait for text
-agent-browser wait --url "**/done"  # Wait for URL pattern
-agent-browser wait --load networkidle # Wait for network idle
+agent-browser snapshot            # Full accessibility tree
+agent-browser snapshot -i         # Interactive elements only (recommended)
+agent-browser snapshot -c         # Compact output
+agent-browser snapshot -d 3       # Limit depth to 3
+agent-browser snapshot -s "#main" # Scope to CSS selector
+```
+
+### Interactions (use @refs from snapshot)
+```bash
+agent-browser click @e1           # Click
+agent-browser dblclick @e1        # Double-click
+agent-browser focus @e1           # Focus element
+agent-browser fill @e2 "text"     # Clear and type
+agent-browser type @e2 "text"     # Type without clearing
+agent-browser press Enter         # Press key
+agent-browser press Control+a     # Key combination
+agent-browser keydown Shift       # Hold key down
+agent-browser keyup Shift         # Release key
+agent-browser hover @e1           # Hover
+agent-browser check @e1           # Check checkbox
+agent-browser uncheck @e1         # Uncheck checkbox
+agent-browser select @e1 "value"  # Select dropdown
+agent-browser scroll down 500     # Scroll page
+agent-browser scrollintoview @e1  # Scroll element into view
+agent-browser drag @e1 @e2        # Drag and drop
+agent-browser upload @e1 file.pdf # Upload files
+```
+
+### Get information
+```bash
+agent-browser get text @e1        # Get element text
+agent-browser get html @e1        # Get innerHTML
+agent-browser get value @e1       # Get input value
+agent-browser get attr @e1 href   # Get attribute
+agent-browser get title           # Get page title
+agent-browser get url             # Get current URL
+agent-browser get count ".item"   # Count matching elements
+agent-browser get box @e1         # Get bounding box
+```
+
+### Check state
+```bash
+agent-browser is visible @e1      # Check if visible
+agent-browser is enabled @e1      # Check if enabled
+agent-browser is checked @e1      # Check if checked
 ```
 
 ### Screenshots & PDF
-
 ```bash
-agent-browser screenshot           # Base64 output
-agent-browser screenshot out.png   # Save to file
-agent-browser screenshot --full    # Full page
-agent-browser pdf document.pdf     # Save as PDF
+agent-browser screenshot          # Screenshot to stdout
+agent-browser screenshot path.png # Save to file
+agent-browser screenshot --full   # Full page
+agent-browser pdf output.pdf      # Save as PDF
 ```
 
-### Semantic Locators (Alternative to Refs)
+### Video recording
+```bash
+agent-browser record start ./demo.webm    # Start recording (uses current URL + state)
+agent-browser click @e1                   # Perform actions
+agent-browser record stop                 # Stop and save video
+agent-browser record restart ./take2.webm # Stop current + start new recording
+```
+Recording creates a fresh context but preserves cookies/storage from your session. If no URL is provided, it automatically returns to your current page. For smooth demos, explore first, then start recording.
 
+### Wait
+```bash
+agent-browser wait @e1                     # Wait for element
+agent-browser wait 2000                    # Wait milliseconds
+agent-browser wait --text "Success"        # Wait for text
+agent-browser wait --url "**/dashboard"    # Wait for URL pattern
+agent-browser wait --load networkidle      # Wait for network idle
+agent-browser wait --fn "window.ready"     # Wait for JS condition
+```
+
+### Mouse control
+```bash
+agent-browser mouse move 100 200      # Move mouse
+agent-browser mouse down left         # Press button
+agent-browser mouse up left           # Release button
+agent-browser mouse wheel 100         # Scroll wheel
+```
+
+### Semantic locators (alternative to refs)
 ```bash
 agent-browser find role button click --name "Submit"
 agent-browser find text "Sign In" click
 agent-browser find label "Email" fill "user@test.com"
-agent-browser find placeholder "Search" fill "query"
+agent-browser find first ".item" click
+agent-browser find nth 2 "a" text
 ```
 
-### Browser Configuration
-
+### Browser settings
 ```bash
-agent-browser set viewport 1920 1080
-agent-browser set device "iPhone 14"
-agent-browser set media dark
-agent-browser set offline on
-agent-browser set headers '{"Authorization": "Bearer TOKEN"}'
+agent-browser set viewport 1920 1080      # Set viewport size
+agent-browser set device "iPhone 14"      # Emulate device
+agent-browser set geo 37.7749 -122.4194   # Set geolocation
+agent-browser set offline on              # Toggle offline mode
+agent-browser set headers '{"X-Key":"v"}' # Extra HTTP headers
+agent-browser set credentials user pass   # HTTP basic auth
+agent-browser set media dark              # Emulate color scheme
 ```
 
 ### Cookies & Storage
-
 ```bash
-agent-browser cookies                    # List cookies
-agent-browser cookies set name value     # Set cookie
-agent-browser cookies clear              # Clear all
-agent-browser storage local              # List localStorage
-agent-browser storage local set key val  # Set item
+agent-browser cookies                     # Get all cookies
+agent-browser cookies set name value      # Set cookie
+agent-browser cookies clear               # Clear cookies
+agent-browser storage local               # Get all localStorage
+agent-browser storage local key           # Get specific key
+agent-browser storage local set k v       # Set value
+agent-browser storage local clear         # Clear all
 ```
 
-### Network Interception
-
+### Network
 ```bash
-agent-browser network route "*/api/*"              # Intercept
-agent-browser network route "*/ads/*" --abort      # Block
-agent-browser network route "*/data" --body '{"mock":true}'  # Mock
-agent-browser network requests                     # View requests
-agent-browser network requests --filter "api"      # Filter
+agent-browser network route <url>              # Intercept requests
+agent-browser network route <url> --abort      # Block requests
+agent-browser network route <url> --body '{}'  # Mock response
+agent-browser network unroute [url]            # Remove routes
+agent-browser network requests                 # View tracked requests
+agent-browser network requests --filter api    # Filter requests
 ```
 
-### Tabs
-
+### Tabs & Windows
 ```bash
-agent-browser tab              # List tabs
-agent-browser tab new          # New tab
-agent-browser tab new <url>    # New tab with URL
-agent-browser tab 2            # Switch to tab 2
-agent-browser tab close        # Close current tab
+agent-browser tab                 # List tabs
+agent-browser tab new [url]       # New tab
+agent-browser tab 2               # Switch to tab
+agent-browser tab close           # Close tab
+agent-browser window new          # New window
 ```
 
 ### Frames
-
 ```bash
-agent-browser frame "#iframe"  # Switch to iframe
-agent-browser frame main       # Return to main
+agent-browser frame "#iframe"     # Switch to iframe
+agent-browser frame main          # Back to main frame
 ```
 
 ### Dialogs
-
 ```bash
-agent-browser dialog accept           # Accept alert/confirm
-agent-browser dialog accept "answer"  # Accept prompt with text
-agent-browser dialog dismiss          # Dismiss
+agent-browser dialog accept [text]  # Accept dialog
+agent-browser dialog dismiss        # Dismiss dialog
 ```
 
-### Sessions (Isolated Instances)
-
+### JavaScript
 ```bash
-agent-browser --session user1 open example.com
-agent-browser --session user2 open example.com
-agent-browser session list
+agent-browser eval "document.title"   # Run JavaScript
 ```
 
-### State Persistence
+## Example: Form submission
 
 ```bash
-agent-browser state save auth.json   # Save cookies/storage
-agent-browser state load auth.json   # Restore session
-```
-
-### Debugging
-
-```bash
-agent-browser console            # View console messages
-agent-browser errors             # View errors
-agent-browser highlight @e1      # Highlight element
-agent-browser eval "document.title"  # Run JavaScript
-agent-browser --headed open url  # Show browser window
-agent-browser --debug open url   # Verbose output
-```
-
-### JSON Output (for Parsing)
-
-```bash
-agent-browser snapshot --json
-agent-browser get text @e1 --json
-```
-
-## Example Workflows
-
-### Login Flow
-
-```bash
-agent-browser open "https://example.com/login"
+agent-browser open https://example.com/form
 agent-browser snapshot -i
-# Output shows @e1=email, @e2=password, @e3=submit
+# Output shows: textbox "Email" [ref=e1], textbox "Password" [ref=e2], button "Submit" [ref=e3]
+
 agent-browser fill @e1 "user@example.com"
 agent-browser fill @e2 "password123"
 agent-browser click @e3
+agent-browser wait --load networkidle
+agent-browser snapshot -i  # Check result
+```
+
+## Example: Authentication with saved state
+
+```bash
+# Login once
+agent-browser open https://app.example.com/login
+agent-browser snapshot -i
+agent-browser fill @e1 "username"
+agent-browser fill @e2 "password"
+agent-browser click @e3
 agent-browser wait --url "**/dashboard"
-agent-browser state save auth.json  # Save for reuse
+agent-browser state save auth.json
+
+# Later sessions: load saved state
+agent-browser state load auth.json
+agent-browser open https://app.example.com/dashboard
 ```
 
-### Form Submission
+## Sessions (parallel browsers)
 
 ```bash
-agent-browser open "https://example.com/form"
-agent-browser snapshot -i
-agent-browser fill @e1 "John Doe"
-agent-browser fill @e2 "john@example.com"
-agent-browser select @e3 "Option 2"
-agent-browser check @e4
-agent-browser click @e5
-agent-browser wait --text "Thank you"
-agent-browser screenshot confirmation.png
+agent-browser --session test1 open site-a.com
+agent-browser --session test2 open site-b.com
+agent-browser session list
 ```
 
-### Data Extraction
+## JSON output (for parsing)
+
+Add `--json` for machine-readable output:
+```bash
+agent-browser snapshot -i --json
+agent-browser get text @e1 --json
+```
+
+## Debugging
 
 ```bash
-agent-browser open "https://example.com/products"
-agent-browser snapshot -i
-agent-browser get text @e1 --json  # Product name
-agent-browser get text @e2 --json  # Price
-agent-browser get attr @e3 href    # Link
+agent-browser open example.com --headed              # Show browser window
+agent-browser console                                # View console messages
+agent-browser errors                                 # View page errors
+agent-browser record start ./debug.webm              # Record from current page
+agent-browser record stop                            # Save recording
+agent-browser --cdp 9222 snapshot                    # Connect via CDP
+agent-browser console --clear                        # Clear console
+agent-browser errors --clear                         # Clear errors
+agent-browser highlight @e1                          # Highlight element
+agent-browser trace start                            # Start recording trace
+agent-browser trace stop trace.zip                   # Stop and save trace
 ```
-
-### Multi-Tab Workflow
-
-```bash
-agent-browser open "https://site-a.com"
-agent-browser tab new "https://site-b.com"
-agent-browser tab 1    # Switch to first tab
-agent-browser get text @e1
-agent-browser tab 2    # Switch to second tab
-agent-browser get text @e1
-```
-
-## Best Practices
-
-1. **Always snapshot before interacting** - refs change on page updates
-2. **Use `-i` flag** for snapshot to get only interactive elements
-3. **Use refs (@e1) over CSS selectors** - more reliable for AI
-4. **Re-snapshot after navigation** - page changes invalidate refs
-5. **Use `--json` for parsing** - structured output for automation
-6. **Save auth state** - reuse `state save/load` for authenticated sessions
-7. **Wait appropriately** - use `wait` commands to handle async content
-
-## Error Handling
-
-If an element ref is invalid:
-1. Re-run `snapshot -i` to get fresh refs
-2. Verify element exists with `is visible @eX`
-3. Use `wait @eX` if element loads asynchronously
-
-## Platform Notes
-
-- Native Rust binary: macOS (ARM64/x64), Linux (ARM64/x64), Windows (x64)
-- Falls back to Node.js on unsupported platforms
-- Requires Chromium (installed via `agent-browser install`)

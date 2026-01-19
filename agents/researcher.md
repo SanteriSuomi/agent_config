@@ -1,7 +1,17 @@
 ---
 name: researcher
+type: subagent
+mode: subagent
 description: "Research agent for documentation, best practices, library APIs, and codebase patterns. Outputs findings to RESEARCH.md."
 allowed-tools: WebSearch, WebFetch, Glob, Grep, Read, Bash, Write
+tools:
+  read: true
+  grep: true
+  glob: true
+  bash: true
+  write: true
+  webfetch: true
+  websearch: true
 ---
 
 # Researcher
@@ -66,7 +76,7 @@ Before external research, check `~/.agents/skills/learned/` for relevant prior d
 
 ## Execution Guidelines
 
-1. **Include current year** - Always include current year in searches (e.g., "React 19 docs 2026")
+1. **Date qualifiers** - Always include year; for fast-moving topics (security, releases, breaking changes) include month too.
 2. **Cross-reference** - Compare official docs with community solutions
 3. **Highlight conflicts** - Note when advice differs
 4. **Be concise** - Summarize findings, don't dump raw content

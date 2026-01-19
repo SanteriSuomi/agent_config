@@ -1,7 +1,15 @@
 ---
 name: code-refactorer
+type: subagent
+mode: subagent
 description: 'Code simplifier for production readiness. Removes over-engineering, simplifies abstractions, and ensures code follows KISS/DRY principles. Invoke after feature iterations.'
 allowed-tools: Read, Grep, Glob, Edit, Bash
+tools:
+  read: true
+  grep: true
+  glob: true
+  edit: true
+  bash: true
 ---
 
 # Code Refactorer
