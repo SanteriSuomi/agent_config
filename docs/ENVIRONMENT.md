@@ -60,7 +60,6 @@ Single source of truth via symlinks:
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
 | `continuous-learning` | Extract reusable knowledge from sessions | Auto-triggers on discoveries |
-| `browser-automation` | Browser testing via Playwright | "test in browser", "navigate to" |
 | `context7-api` | Up-to-date library documentation | "docs for [library]" |
 
 ### Quality Skills

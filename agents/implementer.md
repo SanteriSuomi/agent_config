@@ -134,10 +134,9 @@ Spawn `security-auditor` if ANY of these areas were touched:
 For projects with UI:
 
 1. Start the application (if not already running)
-2. **Use `browser-automation` skill** for verification
-3. Test new functionality end-to-end
-4. Check for errors in console/logs
-5. Verify behavior matches requirements
+2. Test new functionality manually or via test scripts
+3. Check for errors in console/logs
+4. Verify behavior matches requirements
 
 **Skip if:** Library-only projects, pure backend APIs tested via unit/integration tests.
 
