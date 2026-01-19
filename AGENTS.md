@@ -14,6 +14,7 @@ Load relevant docs based on current task:
 - Building UI? → `docs/DESIGN_STYLE.md`
 - Setting up project? → `docs/PROJECT_SETUP.md`
 - Avoiding bloat? → `docs/ANTI_PATTERNS.md`
+- Writing prose? → `docs/WRITING_STYLE.md`
 
 ## Critical Rules (Always Apply)
 

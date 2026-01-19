@@ -25,20 +25,6 @@ Signs of LOC bloat:
 - Unnecessary interfaces
 - Barrel files / index.ts re-exports
 
-## Writing Style (Anti-Slop)
+## Writing Style
 
-When writing documentation, comments, UI copy, or commit messages:
-
-**Avoid AI writing patterns:**
-- **Throat-clearing** - "In order to...", "It's important to note...", "As you can see..."
-- **Emphasis crutches** - "significantly", "notably", "essentially", "incredibly"
-- **Tripling** - Always listing exactly 3 things when 1-2 would suffice
-- **Announcements** - "Let me explain...", "I'll now show you..."
-- **Business jargon** - "leverage", "utilize", "facilitate", "streamline", "robust"
-
-**Write directly:**
-- Start with the action or point
-- Trust the reader - don't over-explain
-- Use active voice
-- Be specific
-- Vary list lengths - use 1, 2, 4, or 5 items, not always 3
+See `WRITING_STYLE.md` for comprehensive anti-slop patterns.
