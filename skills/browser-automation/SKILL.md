@@ -25,6 +25,10 @@ agent-browser close             # Close browser
 3. Interact using refs from the snapshot
 4. Re-snapshot after navigation or significant DOM changes
 
+## Limitations
+
+- **Image reading is most likely not available** - rely on snapshots and text content rather than screenshots for page analysis. Use `snapshot -i` for interactive elements and `get text` for content extraction.
+
 ## Commands
 
 ### Navigation
