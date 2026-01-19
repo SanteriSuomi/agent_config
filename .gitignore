@@ -1,0 +1,35 @@
+# Generated/session-specific knowledge
+skills/learned/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Environment / secrets
+.env
+.env.*
+*.local
+
+# Backup files
+*.bak
+*.backup
+
+# Node modules (if any skills have dependencies)
+node_modules/
