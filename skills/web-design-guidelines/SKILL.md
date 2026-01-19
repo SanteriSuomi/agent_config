@@ -2,6 +2,7 @@
 name: web-design-guidelines
 description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
 source: https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines
+last-synced: 2026-01-19
 metadata:
   author: vercel
   version: "1.0.0"
