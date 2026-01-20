@@ -15,18 +15,18 @@ Shared configuration for AI coding agents (Claude Code, OpenCode, etc.).
 
 ## Setup
 
+Both tools use symlinks to `~/.agents`. Run as admin on Windows:
+
 ### Claude Code
 
-1. Reference in `~/.claude/CLAUDE.md`:
-   ```markdown
-   Contents of ~/.agents/AGENTS.md
-   ```
-
-2. Skills auto-discovered from `~/.claude/skills/` or configure path.
+```powershell
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\agents" -Target "$env:USERPROFILE\.agents\agents"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\skills" -Target "$env:USERPROFILE\.agents\skills"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\docs" -Target "$env:USERPROFILE\.agents\docs"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\CLAUDE.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
+```
 
 ### OpenCode
-
-Symlink directories (run as admin on Windows):
 
 ```powershell
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\agent" -Target "$env:USERPROFILE\.agents\agents"
