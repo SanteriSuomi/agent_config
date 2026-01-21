@@ -255,3 +255,31 @@ agent-browser highlight @e1                          # Highlight element
 agent-browser trace start                            # Start recording trace
 agent-browser trace stop trace.zip                   # Stop and save trace
 ```
+
+## Troubleshooting
+
+### "Browser not launched. Call launch first" (Windows Bug)
+
+**Issue**: agent-browser v0.6.0 has a Windows-specific bug where the daemon can't spawn correctly. This causes the error "Browser not launched. Call launch first" even though the daemon is running.
+
+**Affected**: Windows users with npm v0.6.0 (January 18, 2026 release)
+
+**GitHub Issue**: https://github.com/vercel-labs/agent-browser/issues/90
+
+**Temporary Fix** (bypass the bug by starting daemon manually):
+
+```bash
+# Step 1: Kill any existing daemon on port 50838
+netstat -ano | findstr :50838
+# Note the PID from the output, then:
+taskkill /F /PID <PID>
+
+# Step 2: Start daemon manually with node.exe (bypasses CLI path bug)
+Start-Process -WindowStyle Hidden -FilePath node.exe -ArgumentList '"C:\Users\sants\AppData\Roaming\npm\node_modules\agent-browser\dist\daemon.js"'
+
+# Step 3: Wait 2 seconds for daemon to initialize
+Start-Sleep -Seconds 2
+
+# Step 4: Use agent-browser normally
+agent-browser open example.com
+```
