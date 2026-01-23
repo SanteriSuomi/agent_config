@@ -3,7 +3,7 @@ name: vercel-react-best-practices
 description: "React and Next.js performance optimization guidelines from Vercel Engineering. AUTO-LOAD when: writing React components, building Next.js pages, optimizing performance, reviewing React code. Triggers: React, Next.js, useState, useEffect, 'make it faster', bundle size, data fetching, SSR, RSC."
 license: MIT
 source: https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices
-last-synced: 2026-01-19
+last-synced: 2026-01-24
 metadata:
   author: vercel
   version: "1.0.0"
@@ -11,7 +11,7 @@ metadata:
 
 # Vercel React Best Practices
 
-Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 45 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
+Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 57 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
 
 ## When to Apply
 
@@ -55,8 +55,10 @@ Reference these guidelines when:
 
 ### 3. Server-Side Performance (HIGH)
 
+- `server-auth-actions` - Authenticate server actions like API routes
 - `server-cache-react` - Use React.cache() for per-request deduplication
 - `server-cache-lru` - Use LRU cache for cross-request caching
+- `server-dedup-props` - Avoid duplicate serialization in RSC props
 - `server-serialization` - Minimize data passed to client components
 - `server-parallel-fetching` - Restructure components to parallelize fetches
 - `server-after-nonblocking` - Use after() for non-blocking operations
@@ -65,16 +67,23 @@ Reference these guidelines when:
 
 - `client-swr-dedup` - Use SWR for automatic request deduplication
 - `client-event-listeners` - Deduplicate global event listeners
+- `client-passive-event-listeners` - Use passive listeners for scroll
+- `client-localstorage-schema` - Version and minimize localStorage data
 
 ### 5. Re-render Optimization (MEDIUM)
 
 - `rerender-defer-reads` - Don't subscribe to state only used in callbacks
 - `rerender-memo` - Extract expensive work into memoized components
+- `rerender-memo-with-default-value` - Hoist default non-primitive props
 - `rerender-dependencies` - Use primitive dependencies in effects
 - `rerender-derived-state` - Subscribe to derived booleans, not raw values
+- `rerender-derived-state-no-effect` - Derive state during render, not effects
 - `rerender-functional-setstate` - Use functional setState for stable callbacks
 - `rerender-lazy-state-init` - Pass function to useState for expensive values
+- `rerender-simple-expression-in-memo` - Avoid memo for simple primitives
+- `rerender-move-effect-to-event` - Put interaction logic in event handlers
 - `rerender-transitions` - Use startTransition for non-urgent updates
+- `rerender-use-ref-transient-values` - Use refs for transient frequent values
 
 ### 6. Rendering Performance (MEDIUM)
 
@@ -83,8 +92,10 @@ Reference these guidelines when:
 - `rendering-hoist-jsx` - Extract static JSX outside components
 - `rendering-svg-precision` - Reduce SVG coordinate precision
 - `rendering-hydration-no-flicker` - Use inline script for client-only data
+- `rendering-hydration-suppress-warning` - Suppress expected mismatches
 - `rendering-activity` - Use Activity component for show/hide
 - `rendering-conditional-render` - Use ternary, not && for conditionals
+- `rendering-usetransition-loading` - Prefer useTransition for loading state
 
 ### 7. JavaScript Performance (LOW-MEDIUM)
 
@@ -104,6 +115,7 @@ Reference these guidelines when:
 ### 8. Advanced Patterns (LOW)
 
 - `advanced-event-handler-refs` - Store event handlers in refs
+- `advanced-init-once` - Initialize app once per app load
 - `advanced-use-latest` - useLatest for stable callback refs
 
 ## How to Use
