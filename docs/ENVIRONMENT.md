@@ -36,21 +36,11 @@ Single source of truth via symlinks:
 
 ## Available Agents
 
-### ACE-FCA Workflow Agents
-
-| Agent | Purpose | Spawns |
-|-------|---------|--------|
-| `ace-orchestrator` | Orchestrates research → plan → implement pipeline | spec-interviewer, researcher, implementer |
-| `spec-interviewer` | Requirements gathering via structured Q&A | — |
-| `researcher` | Documentation, best practices, codebase patterns | — |
-| `implementer` | Autonomous feature implementation | code-reviewer, code-refactorer, security-auditor |
-
-### Quality Agents
-
 | Agent | Purpose | When Used |
 |-------|---------|-----------|
-| `code-reviewer` | Quality, conventions, architecture check | After implementation |
-| `code-refactorer` | Simplify, remove over-engineering | After review |
+| `researcher` | Documentation, best practices, codebase patterns | Before implementation |
+| `implementer` | Autonomous feature implementation | Feature work |
+| `code-quality` | Two-pass review + refactor (merged reviewer/refactorer) | After changes, before commits |
 | `security-auditor` | OWASP, supply chain, auth checks | When touching auth/input/deps |
 
 ## Available Skills
@@ -90,37 +80,12 @@ Use `web-ui-patterns` while building, `design-review` to validate.
 
 | Skill | Purpose |
 |-------|---------|
+| `postgres-best-practices` | Postgres performance optimization (Supabase) |
 | `logging-best-practices` | Wide events / canonical log lines pattern |
 | `crafting-effective-readmes` | README templates by project type |
 | `skill-judge` | Evaluate skill quality (120-point rubric) |
 | `sec-context` | Security anti-patterns (MANUAL ONLY - explicit request or security-auditor) |
 | `worktrunk` | Git worktree management |
-
-## ACE-FCA Pipeline
-
-```
-[User task] → ace-orchestrator
-    │
-    ├─→ (if unclear) spec-interviewer → SPEC.md
-    │
-    ├─→ researcher(s) → RESEARCH.md
-    │
-    ├─→ [autonomous planning] → PLAN.md
-    │
-    └─→ implementer → code + tests
-           │
-           ├─→ code-reviewer
-           ├─→ code-refactorer
-           └─→ security-auditor (conditional)
-```
-
-### Artifacts
-
-| Artifact | Created By | Consumed By |
-|----------|------------|-------------|
-| `SPEC.md` | spec-interviewer | researcher, implementer |
-| `RESEARCH.md` | researcher | implementer, ace-orchestrator |
-| `PLAN.md` | ace-orchestrator | implementer |
 
 ## Continuous Learning
 

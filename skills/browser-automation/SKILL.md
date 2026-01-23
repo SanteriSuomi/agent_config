@@ -3,29 +3,88 @@ name: browser-automation
 description: 'Browser automation with persistent page state. Use proactively when relevant (e.g., testing web app features during development, verifying UI changes, E2E testing). Also use when users ask to navigate websites, fill forms, take screenshots, extract web data, or automate browser workflows. Triggers: "go to [url]", "open website", "visit", "click on", "fill form", "screenshot", "scrape", "test the website", "log into".'
 allowed-tools: Bash(agent-browser:*)
 source: https://github.com/vercel-labs/agent-browser/blob/main/skills/agent-browser/SKILL.md
-last-synced: 2026-01-19
+last-synced: 2026-01-23
 ---
 
 # Browser Automation with agent-browser
 
 Run `agent-browser --help` for all available commands.
 
+## Windows Git Bash Compatibility
+
+**IMPORTANT:** The npm wrapper doesn't produce output in Git Bash. Use the direct executable:
+
+```bash
+# Define alias for convenience
+alias ab='C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/bin/agent-browser-win32-x64.exe'
+
+# Or use full path directly
+C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/bin/agent-browser-win32-x64.exe open http://localhost:3000
+```
+
+The PowerShell wrapper (`agent-browser.ps1`) works correctly in PowerShell terminals.
+
+## Sessions (REQUIRED)
+
+**Always use uniquely named sessions** — one per task, feature, or test scenario:
+
+```bash
+# Name sessions by what you're testing
+agent-browser --session cv-editor-test open http://localhost:3000/editor
+agent-browser --session settings-page open http://localhost:3000/settings
+agent-browser --session mobile-nav open http://localhost:3000
+```
+
+### Naming Convention
+
+Use descriptive names based on context:
+- `feature-login-flow` — testing login feature
+- `bug-123-repro` — reproducing issue #123
+- `e2e-checkout` — E2E checkout test
+- `mobile-responsive` — mobile viewport testing
+
+### Why Unique Sessions?
+- **Avoid "Browser not launched" errors** — stale/reused sessions cause this
+- **Clean state per task** — no leftover cookies, localStorage, or page state
+- **Parallel testing** — run multiple browsers simultaneously
+- **Isolation** — each task gets independent browser instance
+- **Debuggability** — know which session belongs to which task
+
+### Manage Sessions
+```bash
+agent-browser session list                    # Show active sessions
+agent-browser --session feature-x close       # Close specific session
+```
+
+### Anti-pattern: Reusing session names
+```bash
+# BAD: Reusing generic names leads to stale state
+agent-browser --session test open ...   # Used yesterday
+agent-browser --session test open ...   # Today: "Browser not launched" error
+
+# GOOD: Unique names per task
+agent-browser --session test-jan24-cv open ...
+```
+
 ## Quick start
 
 ```bash
-agent-browser open <url>        # Navigate to page
-agent-browser snapshot -i       # Get interactive elements with refs
-agent-browser click @e1         # Click element by ref
-agent-browser fill @e2 "text"   # Fill input by ref
-agent-browser close             # Close browser
+# Use a unique session name for your task
+agent-browser --session my-feature-test open <url>    # Navigate to page
+agent-browser --session my-feature-test snapshot -i   # Get interactive elements with refs
+agent-browser --session my-feature-test click @e1     # Click element by ref
+agent-browser --session my-feature-test fill @e2 "text"  # Fill input by ref
+agent-browser --session my-feature-test close         # Close browser
 ```
 
 ## Core workflow
 
-1. Navigate: `agent-browser open <url>`
-2. Snapshot: `agent-browser snapshot -i` (returns elements with refs like `@e1`, `@e2`)
-3. Interact using refs from the snapshot
-4. Re-snapshot after navigation or significant DOM changes
+1. **Create unique session**: Choose a descriptive name for your task
+2. **Navigate**: `agent-browser --session <task-name> open <url>`
+3. **Snapshot**: `agent-browser --session <task-name> snapshot -i` (returns refs like `@e1`, `@e2`)
+4. **Interact** using refs from the snapshot
+5. **Re-snapshot** after navigation or significant DOM changes
+6. **Close**: `agent-browser --session <task-name> close`
 
 ## Limitations
 
@@ -60,6 +119,7 @@ agent-browser fill @e2 "text"     # Clear and type
 agent-browser type @e2 "text"     # Type without clearing
 agent-browser press Enter         # Press key
 agent-browser press Control+a     # Key combination
+agent-browser press ?             # Special chars: use char directly, not Shift+/
 agent-browser keydown Shift       # Hold key down
 agent-browser keyup Shift         # Release key
 agent-browser hover @e1           # Hover
@@ -82,6 +142,7 @@ agent-browser get title           # Get page title
 agent-browser get url             # Get current URL
 agent-browser get count ".item"   # Count matching elements
 agent-browser get box @e1         # Get bounding box
+agent-browser get styles @e1      # Get computed styles
 ```
 
 ### Check state
@@ -211,32 +272,33 @@ pm2 delete devserver                       # Remove when done with project
 ## Example: Form submission
 
 ```bash
-agent-browser open https://example.com/form
-agent-browser snapshot -i
+agent-browser --session form open https://example.com/form
+agent-browser --session form snapshot -i
 # Output shows: textbox "Email" [ref=e1], textbox "Password" [ref=e2], button "Submit" [ref=e3]
 
-agent-browser fill @e1 "user@example.com"
-agent-browser fill @e2 "password123"
-agent-browser click @e3
-agent-browser wait --load networkidle
-agent-browser snapshot -i  # Check result
+agent-browser --session form fill @e1 "user@example.com"
+agent-browser --session form fill @e2 "password123"
+agent-browser --session form click @e3
+agent-browser --session form wait --load networkidle
+agent-browser --session form snapshot -i  # Check result
+agent-browser --session form close
 ```
 
 ## Example: Authentication with saved state
 
 ```bash
 # Login once
-agent-browser open https://app.example.com/login
-agent-browser snapshot -i
-agent-browser fill @e1 "username"
-agent-browser fill @e2 "password"
-agent-browser click @e3
-agent-browser wait --url "**/dashboard"
-agent-browser state save auth.json
+agent-browser --session auth open https://app.example.com/login
+agent-browser --session auth snapshot -i
+agent-browser --session auth fill @e1 "username"
+agent-browser --session auth fill @e2 "password"
+agent-browser --session auth click @e3
+agent-browser --session auth wait --url "**/dashboard"
+agent-browser --session auth state save auth.json
 
 # Later sessions: load saved state
-agent-browser state load auth.json
-agent-browser open https://app.example.com/dashboard
+agent-browser --session dashboard state load auth.json
+agent-browser --session dashboard open https://app.example.com/dashboard
 ```
 
 ## Sessions (parallel browsers)
@@ -258,43 +320,90 @@ agent-browser get text @e1 --json
 ## Debugging
 
 ```bash
-agent-browser open example.com --headed              # Show browser window
-agent-browser console                                # View console messages
-agent-browser errors                                 # View page errors
-agent-browser record start ./debug.webm              # Record from current page
-agent-browser record stop                            # Save recording
-agent-browser --cdp 9222 snapshot                    # Connect via CDP
-agent-browser console --clear                        # Clear console
-agent-browser errors --clear                         # Clear errors
-agent-browser highlight @e1                          # Highlight element
-agent-browser trace start                            # Start recording trace
-agent-browser trace stop trace.zip                   # Stop and save trace
+agent-browser --session debug open example.com --headed   # Show browser window
+agent-browser --session debug console                     # View console messages
+agent-browser --session debug errors                      # View page errors
+agent-browser --session debug network requests            # View network requests (v0.7+)
+agent-browser --session debug storage local               # View localStorage (v0.7+)
+agent-browser --session debug record start ./debug.webm   # Record from current page
+agent-browser --session debug record stop                 # Save recording
+agent-browser --session debug console --clear             # Clear console
+agent-browser --session debug errors --clear              # Clear errors
+agent-browser --session debug highlight @e1               # Highlight element
+agent-browser --session debug trace start                 # Start recording trace
+agent-browser --session debug trace stop trace.zip        # Stop and save trace
+agent-browser --cdp 9222 snapshot                         # Connect via CDP
 ```
+
+## Cloud Providers & Profiles
+
+```bash
+# Use cloud browser (Browserbase, Browser Use)
+agent-browser -p browserbase open example.com
+# Or set AGENT_BROWSER_PROVIDER=browserbase
+
+# Persistent profiles (retain cookies, localStorage across restarts)
+agent-browser --profile myprofile open example.com
+```
+
+## References
+
+For detailed guides, load as needed:
+
+- `~/.agents/skills/browser-automation/references/workarounds.md` — **Platform fixes, complex editors, Shadow DOM, iframes**
+- `~/.agents/skills/browser-automation/references/authentication.md` — Auth patterns
+- `~/.agents/skills/browser-automation/references/session-management.md` — Session lifecycle
+- `~/.agents/skills/browser-automation/references/snapshot-refs.md` — Snapshot refs explained
+- `~/.agents/skills/browser-automation/references/proxy-support.md` — Proxy configuration
+- `~/.agents/skills/browser-automation/references/video-recording.md` — Recording details
 
 ## Troubleshooting
 
-### "Browser not launched. Call launch first" (Windows Bug)
+### "Browser not launched" Error
 
-**Issue**: agent-browser v0.6.0 has a Windows-specific bug where the daemon can't spawn correctly. This causes the error "Browser not launched. Call launch first" even though the daemon is running.
-
-**Affected**: Windows users with npm v0.6.0 (January 18, 2026 release)
-
-**GitHub Issue**: https://github.com/vercel-labs/agent-browser/issues/90
-
-**Temporary Fix** (bypass the bug by starting daemon manually):
-
+Use a fresh named session:
 ```bash
-# Step 1: Kill any existing daemon on port 50838
-netstat -ano | findstr :50838
-# Note the PID from the output, then:
-taskkill /F /PID <PID>
+agent-browser --session fresh123 open http://example.com
+```
+This avoids stale default session state.
 
-# Step 2: Start daemon manually with node.exe (bypasses CLI path bug)
-Start-Process -WindowStyle Hidden -FilePath node.exe -ArgumentList '"C:\Users\sants\AppData\Roaming\npm\node_modules\agent-browser\dist\daemon.js"'
+### Windows Git Bash: No Output
 
-# Step 3: Wait 2 seconds for daemon to initialize
-Start-Sleep -Seconds 2
+The npm wrapper (`agent-browser.cmd`) doesn't produce stdout in Git Bash. Solutions:
 
-# Step 4: Use agent-browser normally
-agent-browser open example.com
+1. **Use direct executable** (recommended):
+   ```bash
+   C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/bin/agent-browser-win32-x64.exe --session test open http://example.com
+   ```
+
+2. **Use PowerShell** instead of Git Bash - the `.ps1` wrapper works correctly.
+
+### Windows: `/bin/sh.exe` not found
+
+The npm-generated PowerShell wrapper tries to use `/bin/sh` which doesn't exist on Windows. Fix by editing `%APPDATA%\npm\agent-browser.ps1`:
+
+```powershell
+#!/usr/bin/env pwsh
+$basedir=Split-Path $MyInvocation.MyCommand.Definition -Parent
+
+$ret=0
+if ($MyInvocation.ExpectingInput) {
+  $input | & "$basedir/node_modules/agent-browser/bin/agent-browser-win32-x64.exe" $args
+} else {
+  & "$basedir/node_modules/agent-browser/bin/agent-browser-win32-x64.exe" $args
+}
+$ret=$LASTEXITCODE
+exit $ret
+```
+
+### Complex Editors (Monaco, CodeMirror, etc.)
+
+`fill @ref` doesn't work with virtual editors. See `references/workarounds.md` for JavaScript solutions.
+
+### Element Not Found After Interaction
+
+Refs change after DOM updates. Always re-snapshot:
+```bash
+agent-browser --session test click @e1
+agent-browser --session test snapshot -i  # Get fresh refs
 ```
