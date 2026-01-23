@@ -24,7 +24,7 @@ desktop.ini
 
 # Environment / secrets
 .env
-.env.*
+!.env.example
 *.local
 
 # Backup files

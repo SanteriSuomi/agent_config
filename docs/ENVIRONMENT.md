@@ -32,7 +32,7 @@ Single source of truth via symlinks:
 | `~/.config/opencode/docs` | `~/.agents/docs` |
 | `~/.config/opencode/AGENTS.md` | `~/.agents/AGENTS.md` |
 
-**Manage symlinks:** `bunx @iannuttall/dotagents` (interactive CLI)
+**Manage symlinks:** Created manually (see Troubleshooting section)
 
 ## Available Agents
 
@@ -68,14 +68,32 @@ Single source of truth via symlinks:
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
 | `react-best-practices` | 40+ React/Next.js performance rules | Writing React code |
-| `web-design-guidelines` | 100+ accessibility/UX rules | "review my UI", "check accessibility" |
-| `design-review` | Visual consistency validation | After building components |
-| `ui-patterns` | UI build patterns and constraints | Building components/forms |
+| `web-ui-patterns` | Comprehensive UI build patterns | Building components/forms/layouts |
+| `design-review` | Validation + accessibility audit | After building, before commit |
+
+### Merged Skills
+
+**`web-ui-patterns`** combines rules from multiple sources into one comprehensive skill:
+
+| Source | Content |
+|--------|---------|
+| `ibelick/ui-skills` | baseline-ui, fixing-accessibility, fixing-motion-performance, fixing-metadata |
+| `vercel-labs/web-interface-guidelines` | Accessibility, forms, typography, interaction rules |
+
+**`design-review`** includes validation rules from:
+- `rams.ai`
+- `vercel-labs/web-interface-guidelines`
+
+Use `web-ui-patterns` while building, `design-review` to validate.
 
 ### Utility Skills
 
 | Skill | Purpose |
 |-------|---------|
+| `logging-best-practices` | Wide events / canonical log lines pattern |
+| `crafting-effective-readmes` | README templates by project type |
+| `skill-judge` | Evaluate skill quality (120-point rubric) |
+| `sec-context` | Security anti-patterns (MANUAL ONLY - explicit request or security-auditor) |
 | `worktrunk` | Git worktree management |
 
 ## ACE-FCA Pipeline
@@ -146,17 +164,34 @@ description: 'Trigger phrases and purpose'
 
 ## External Skills
 
-For skills from external repos, add `source` to frontmatter:
+For skills from external repos, add `source` or `sources` to frontmatter:
 
 ```yaml
 ---
 name: external-skill
 description: '...'
 source: https://github.com/owner/repo
+last-synced: 2026-01-23
 ---
 ```
 
-**Update:** `cd ~/.agents/skills/<name> && git pull`
+For merged skills from multiple sources:
+
+```yaml
+---
+name: merged-skill
+description: '...'
+sources:
+  - https://github.com/owner/repo-a
+  - https://github.com/owner/repo-b
+merged-from:
+  - skill-a (owner/repo-a)
+  - skill-b (owner/repo-b)
+last-synced: 2026-01-23
+---
+```
+
+**Update:** Fetch latest from source URL and update `last-synced` date.
 
 ## Project Overrides
 
@@ -165,6 +200,64 @@ To override global agents/skills for a project:
 1. Create `<project>/.agents/` directory
 2. Add overriding files with same names
 3. Project-level takes precedence
+
+## Hooks
+
+Hooks live in `~/.agents/hooks/`. Unlike skills/agents, symlinks don't work for hooks — each tool requires manual setup.
+
+### Claude Code
+
+Claude Code uses Git Bash on Windows. Add to `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": ".*",
+      "hooks": ["bash ~/.agents/hooks/claudeception-activator.sh"]
+    }]
+  }
+}
+```
+
+If Git Bash unavailable, use PowerShell:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": ".*",
+      "hooks": ["powershell -File ~/.agents/hooks/claudeception-activator.ps1"]
+    }]
+  }
+}
+```
+
+### OpenCode
+
+Copy plugin to OpenCode's plugins folder:
+
+```bash
+# Windows
+copy "%USERPROFILE%\.agents\hooks\claudeception-activator.ts" "%USERPROFILE%\.config\opencode\plugins\"
+
+# Unix/macOS
+cp ~/.agents/hooks/claudeception-activator.ts ~/.config/opencode/plugins/
+```
+
+Or add to `opencode.jsonc`:
+
+```json
+{
+  "plugins": ["~/.agents/hooks/claudeception-activator.ts"]
+}
+```
+
+### Available Hooks
+
+| Hook | Purpose |
+|------|---------|
+| `claudeception-activator` | Reminds agent to evaluate session for extractable knowledge |
 
 ## Version Control
 
@@ -182,7 +275,15 @@ git push                # Push to remote (if configured)
 
 **Symlinks broken?**
 ```bash
-bunx @iannuttall/dotagents  # Repair via interactive CLI
+# Windows (run as admin)
+mklink /D "%USERPROFILE%\.claude\agents" "%USERPROFILE%\.agents\agents"
+mklink /D "%USERPROFILE%\.claude\skills" "%USERPROFILE%\.agents\skills"
+mklink /D "%USERPROFILE%\.claude\docs" "%USERPROFILE%\.agents\docs"
+
+# Unix/macOS
+ln -s ~/.agents/agents ~/.claude/agents
+ln -s ~/.agents/skills ~/.claude/skills
+ln -s ~/.agents/docs ~/.claude/docs
 ```
 
 **Agent not recognized?**
