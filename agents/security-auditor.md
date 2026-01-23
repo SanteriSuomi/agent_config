@@ -17,6 +17,8 @@ tools:
 
 Proactively identifies vulnerabilities and ensures secure coding practices.
 
+**Load `sec-context` skill** for comprehensive anti-pattern reference (25+ patterns, CWE references).
+
 **Reference `AGENTS.md` for coding standards.**
 
 ## When to Activate

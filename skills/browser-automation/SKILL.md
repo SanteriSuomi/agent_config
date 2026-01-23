@@ -193,6 +193,21 @@ agent-browser dialog dismiss        # Dismiss dialog
 agent-browser eval "document.title"   # Run JavaScript
 ```
 
+## Managing Dev Servers with PM2
+
+When testing local apps, use PM2 to manage the dev server in the background.
+
+**Philosophy:** Start once, keep running. Most dev servers have watch/hot-reload built in (`npm run dev`, `vite`, `next dev`, etc.) — they auto-reload on file changes. Don't stop between tests. This applies to any long-running process with watch mode, not just web apps.
+
+```bash
+pm2 start "npm run dev" --name devserver   # Start (survives terminal close)
+pm2 logs devserver                         # View logs
+pm2 list                                   # Check status
+pm2 delete devserver                       # Remove when done with project
+```
+
+---
+
 ## Example: Form submission
 
 ```bash

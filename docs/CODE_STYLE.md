@@ -40,3 +40,4 @@
 
 - **Prefer** well-maintained libraries over custom implementations
 - Only write custom code for simple or one-off tasks where library overhead isn't justified
+- Check if the project already has a library that solves the problem before adding new dependencies

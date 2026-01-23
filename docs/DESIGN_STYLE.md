@@ -1,8 +1,8 @@
 # Design System
 
-> Flexoki Warm · Default global design tokens
+> Flexoki Warm · Default global design tokens · **Dark mode only**
 
-Note: Web-focused but principles apply to other platforms.
+Note: Web-focused but principles apply to other platforms. This is intentionally a dark theme — no light mode variant.
 
 ## Philosophy
 
@@ -29,11 +29,13 @@ Note: Web-focused but principles apply to other platforms.
 
 ### Text
 
-| Token  | Hex       | Usage                   |
-|--------|-----------|-------------------------|
-| `tx`   | `#CECDC3` | Primary text, headings  |
-| `tx-2` | `#878580` | Secondary text          |
-| `tx-3` | `#6F6E69` | Muted, disabled         |
+| Token  | Hex       | Usage                   | Contrast |
+|--------|-----------|-------------------------|----------|
+| `tx`   | `#CECDC3` | Primary text, headings  | ~11:1 ✓  |
+| `tx-2` | `#878580` | Secondary text          | ~5:1 ✓   |
+| `tx-3` | `#6F6E69` | Muted, disabled only    | ~3.5:1 ⚠ |
+
+Note: `tx-3` meets WCAG AA for large text only. Use exclusively for disabled states or decorative labels.
 
 ### Accent (Role-Based)
 
@@ -61,13 +63,21 @@ Note: Web-focused but principles apply to other platforms.
 
 ### Scale
 
-| Size | Weight | Use                    |
-|------|--------|------------------------|
-| 11px | 400    | Labels, captions       |
-| 12px | 400    | Small UI, metadata     |
-| 14px | 400    | Body, inputs, buttons  |
-| 16px | 600    | Section titles         |
-| 20px | 600    | Page titles            |
+| Size | Weight | Line Height | Use                    |
+|------|--------|-------------|------------------------|
+| 11px | 400    | 1.25        | Labels, captions       |
+| 12px | 400    | 1.25        | Small UI, metadata     |
+| 14px | 400    | 1.5         | Body, inputs, buttons  |
+| 16px | 600    | 1.25        | Section titles         |
+| 20px | 600    | 1.25        | Page titles            |
+
+### Line Height Tokens
+
+| Token    | Value | Use                    |
+|----------|-------|------------------------|
+| `tight`  | 1.25  | Headings, labels       |
+| `normal` | 1.5   | Body text, paragraphs  |
+| `relaxed`| 1.75  | Long-form content      |
 
 **Never use 700/bold.** Differentiate with color.
 
@@ -127,7 +137,18 @@ Note: Web-focused but principles apply to other platforms.
 
 - `outline: 2px solid accent-stroke`
 - `outline-offset: 2px`
-- Always visible
+- Always visible — never remove without replacement
+
+```css
+/* Focus utility */
+:focus-visible {
+  outline: 2px solid var(--accent-stroke);
+  outline-offset: 2px;
+}
+
+/* Never do this */
+:focus { outline: none; } /* ✗ Removes accessibility */
+```
 
 ## Transitions
 
@@ -160,5 +181,8 @@ Note: Web-focused but principles apply to other platforms.
   --radius-lg: 8px;
   --font-sans: 'Source Sans 3', system-ui, sans-serif;
   --font-mono: 'Monaspace Argon', 'SF Mono', monospace;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
 }
 ```
