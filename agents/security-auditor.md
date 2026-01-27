@@ -1,17 +1,26 @@
 ---
 name: security-auditor
-type: subagent
-mode: subagent
 description: "Security auditor for vulnerabilities. Runs OWASP and supply chain checks. Invoke proactively when touching auth, access control, dependencies, or user input."
-allowed-tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: true
-  websearch: true
-  webfetch: true
+# Claude Code
+tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
+permissionMode: default
+# OpenCode
+mode: subagent
+permission:
+  read: allow
+  grep: allow
+  glob: allow
+  bash: allow
+  websearch: allow
+  webfetch: allow
 ---
+
+> **CRITICAL: ALWAYS use tools. NEVER guess or use training data.**
+> - Use `Read` to read files — never assume contents
+> - Use `Grep`/`Glob` to find patterns — never guess file locations
+> - Use `Bash` to run security scans — never assume results
+> - Use `WebSearch` for current CVEs — never use outdated training data
+> - If a tool fails, report the failure — don't fabricate results
 
 # Security Auditor
 

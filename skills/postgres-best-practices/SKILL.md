@@ -1,11 +1,11 @@
 ---
 name: postgres-best-practices
 description: "Postgres performance optimization from Supabase. AUTO-LOAD when: writing SQL queries, designing schemas, adding indexes, debugging slow queries, configuring connection pooling. Triggers: 'optimize query', 'add index', 'slow query', 'postgres performance', RLS, schema design, EXPLAIN."
-source: https://github.com/supabase/agent-skills/tree/main/skills/postgres-best-practices
-last-synced: 2026-01-23
+source: https://github.com/supabase/agent-skills/tree/main/skills/supabase-postgres-best-practices
+last-synced: 2026-01-27
 metadata:
   author: supabase
-  version: "1.0.0"
+  version: "1.1.0"
   license: MIT
 ---
 

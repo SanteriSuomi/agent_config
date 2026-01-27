@@ -1,17 +1,25 @@
 ---
 name: code-quality
-type: subagent
+description: "Code quality agent for review and refactoring. Two-pass approach: review first (identify issues), then refactor (fix prioritized). Invoke proactively after significant changes or before commits."
+# Claude Code
+tools: Read, Grep, Glob, Edit, Bash, WebFetch
+permissionMode: acceptEdits
+# OpenCode
 mode: subagent
-description: 'Code quality agent for review and refactoring. Two-pass approach: review first (identify issues), then refactor (fix prioritized). Invoke proactively after significant changes or before commits.'
-allowed-tools: Read, Grep, Glob, Edit, Bash, WebFetch
-tools:
-  read: true
-  grep: true
-  glob: true
-  edit: true
-  bash: true
-  webfetch: true
+permission:
+  read: allow
+  grep: allow
+  glob: allow
+  edit: allow
+  bash: allow
+  webfetch: allow
 ---
+
+> **CRITICAL: ALWAYS use tools. NEVER guess or use training data.**
+> - Use `Read` to read files — never assume contents
+> - Use `Grep`/`Glob` to find patterns — never guess file locations
+> - Use `Bash` to run linters/tests — never assume results
+> - If a tool fails, report the failure — don't fabricate results
 
 # Code Quality Agent
 

@@ -1,28 +1,67 @@
 # AGENTS.md
 
-General guidance for AI agents on this computer.
+Global rules for AI agents. Be concise — minimal code, minimal prose, minimal steps.
 
-## Just-In-Time Reference
+## Environment
 
-**You MUST load relevant docs before starting work:**
+```
+~/.agents/                  # Source of truth (symlinked to ~/.claude/, ~/.config/opencode/)
+├── AGENTS.md               # This file (loaded every session)
+├── agents/                 # Subagents: researcher, implementer, code-quality, security-auditor
+├── skills/                 # Auto-loading contextual skills
+├── commands/               # Slash commands
+└── hooks/                  # Automation hooks
+```
 
-| Task | Load |
-|------|------|
-| Writing code | `~/.agents/docs/CODE_STYLE.md` |
-| Adding comments | `~/.agents/docs/COMMENTS.md` |
-| Running tests | `~/.agents/docs/TESTING.md` |
-| Making commits | `~/.agents/docs/COMMIT_STYLE.md` |
-| Building UI | `~/.agents/docs/DESIGN_STYLE.md` |
-| Setting up project | `~/.agents/docs/PROJECT_SETUP.md` |
-| Avoiding bloat | `~/.agents/docs/ANTI_PATTERNS.md` |
-| Writing prose | `~/.agents/docs/WRITING_STYLE.md` |
-| Agent setup questions | `~/.agents/docs/ENVIRONMENT.md` |
+**Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
 
-## Critical Rules
+## Code
 
-1. **Be concise** — minimal code, minimal prose, minimal steps. Say it once, say it right.
-2. **Use current year** — in all web searches, research, and documentation lookups
+- Explicit named imports, no wildcards or barrel files
+- Case-sensitive paths always
+- Strict mode, type-safe code
+- Constants: local if single-use, shared directory if reused
 
-## Project Discovery
+## Comments
 
-Check project's dependency manifest for tech stack and framework. Look for config files in project root (tsconfig, eslint, cargo.toml, go.mod, etc.).
+**Only for:** exotic functions, workarounds, complex algorithms, "why" explanations.
+**Never:** obvious code, redundant descriptions.
+
+## Commits
+
+- Imperative form ("Add feature" not "Added feature")
+- Only commit when explicitly asked
+- Run tests/lint first
+- No watermarks or signatures
+
+## Testing
+
+After changes, run in order (fail fast):
+1. Type check → 2. Lint → 3. Unit tests → 4. Integration tests
+
+For web apps: use `browser-automation` skill to verify UI changes work.
+
+## Anti-Patterns
+
+- Only make requested changes
+- No unrequested features or refactoring
+- No abstractions for one-time operations
+- No error handling for impossible cases
+- No hypothetical future design
+- Three similar lines > premature abstraction
+
+## Writing (Anti-Slop)
+
+**Avoid:** throat-clearing ("In order to..."), emphasis crutches ("significantly"), tripling (always 3 items), AI words (delve, crucial, leverage, utilize, seamless, robust).
+
+**Do:** Be specific, direct, varied rhythm. Have opinions. Acknowledge uncertainty.
+
+## Web Search
+
+Use current year (2026) in all searches.
+
+## Boundaries
+
+**Always:** Use design-style for UI, run tests before commits, read files before modifying
+**Ask First:** New dependencies, major refactors, architecture changes, deleting files
+**Never:** Commit secrets, force push main, guess file contents, fabricate tool results

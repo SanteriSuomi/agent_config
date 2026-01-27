@@ -52,7 +52,7 @@ GET https://context7.com/api/v1/snippets?library={library}&topic={topic}
 ```
 User: "How do I use React Server Components?"
 
-1. WebSearch: "React Server Components documentation 2026"
+1. WebSearch: "React Server Components documentation [year]"
 2. WebFetch: https://context7.com/api/v1/search?q=react+server+components
 3. Parse response for library_id
 4. WebFetch: https://context7.com/api/v1/library/{library_id}
@@ -82,8 +82,33 @@ When returning documentation:
 - [Practice 2]
 ```
 
+## When NOT to Use
+
+- Simple syntax questions Claude already knows
+- Asking about standard library features (use training knowledge)
+- When user provides their own docs/links
+
+## Anti-Patterns
+
+| Anti-Pattern | Why | Instead |
+|--------------|-----|---------|
+| Fetching full docs for one function | Token waste, slow | Search for specific topic |
+| Ignoring search results | May fetch wrong library | Verify library_id matches intent |
+| No fallback on failure | API may be down | Always have WebSearch fallback |
+| Fetching without summarizing | Overwhelms user | Extract key points only |
+
+## Error Handling
+
+```
+API returns 404        → Library not indexed, use WebSearch fallback
+API returns 429        → Rate limited, wait or use fallback
+API returns empty      → Topic not found, broaden search terms
+Network timeout        → Use cached knowledge + warn user
+```
+
 ## Fallback
 
 If Context7 API is unavailable:
-1. Use `WebSearch` with "[library] official documentation 2026"
+1. Use `WebSearch` with "[library] official documentation [year]"
 2. Use `WebFetch` on official docs sites
+3. Clearly state: "Using web search (Context7 unavailable)"
