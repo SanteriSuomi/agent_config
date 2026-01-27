@@ -1,19 +1,37 @@
-# Design System
+---
+name: design-style
+description: "Flexoki Warm design system. ALWAYS use for ALL UI work — no exceptions. Dark mode only. Auto-triggers: building UI, styling, components, forms, colors, typography, CSS, buttons, inputs, cards."
+---
 
-> Flexoki Warm · Default global design tokens · **Dark mode only**
+> **MANDATORY: Use this design system for all UI work. No other color palettes, no light mode, no shadows.**
 
-Note: Web-focused but principles apply to other platforms. This is intentionally a dark theme — no light mode variant.
+## Before Styling, Ask
+
+1. **Which semantic category?** → bg, text, accent, or semantic
+2. **Which state?** → default, hover, active, focus, disabled
+3. **Does it need focus styling?** → Yes if interactive
+
+## Button Selection
+
+```
+User's primary action     → Primary (accent-fill)
+Secondary/cancel action   → Secondary (ui background)
+Destructive action        → Danger (danger color)
+Low-emphasis/tertiary     → Ghost (transparent)
+```
+
+# Flexoki Design System
+
+> Flexoki Warm · Dark mode only · Ink on paper aesthetic
 
 ## Philosophy
 
 **Ink on paper.** Warm, quiet, functional. UI serves content, never competes.
 
-### Principles
-
-1. **Content-first** - UI serves content
-2. **Anti-decorative** - No ornament without function
-3. **Flat depth** - Borders and layering, never shadows
-4. **Functional color** - Color communicates meaning, not mood
+1. **Content-first** — UI serves content
+2. **Anti-decorative** — No ornament without function
+3. **Flat depth** — Borders and layering, never shadows
+4. **Functional color** — Color communicates meaning, not mood
 
 ## Colors
 
@@ -33,18 +51,16 @@ Note: Web-focused but principles apply to other platforms. This is intentionally
 |--------|-----------|-------------------------|----------|
 | `tx`   | `#CECDC3` | Primary text, headings  | ~11:1 ✓  |
 | `tx-2` | `#878580` | Secondary text          | ~5:1 ✓   |
-| `tx-3` | `#6F6E69` | Muted, disabled only    | ~3.5:1 ⚠ |
+| `tx-3` | `#6F6E69` | Disabled only           | ~3.5:1 ⚠ |
 
-Note: `tx-3` meets WCAG AA for large text only. Use exclusively for disabled states or decorative labels.
+### Accent
 
-### Accent (Role-Based)
-
-| Token               | Hex       | Usage                   |
-|---------------------|-----------|-------------------------|
-| `accent-text`       | `#D07A52` | Links, text             |
-| `accent-fill`       | `#BE6843` | Button backgrounds      |
-| `accent-fill-hover` | `#A85A3A` | Button hover            |
-| `accent-stroke`     | `#D07A52` | Focus borders           |
+| Token               | Hex       | Usage              |
+|---------------------|-----------|-------------------|
+| `accent-text`       | `#D07A52` | Links, text       |
+| `accent-fill`       | `#BE6843` | Button backgrounds|
+| `accent-fill-hover` | `#A85A3A` | Button hover      |
+| `accent-stroke`     | `#D07A52` | Focus borders     |
 
 ### Semantic
 
@@ -61,8 +77,6 @@ Note: `tx-3` meets WCAG AA for large text only. Use exclusively for disabled sta
 | Sans | Source Sans 3   | system-ui         |
 | Mono | Monaspace Argon | SF Mono, monospace|
 
-### Scale
-
 | Size | Weight | Line Height | Use                    |
 |------|--------|-------------|------------------------|
 | 11px | 400    | 1.25        | Labels, captions       |
@@ -71,19 +85,11 @@ Note: `tx-3` meets WCAG AA for large text only. Use exclusively for disabled sta
 | 16px | 600    | 1.25        | Section titles         |
 | 20px | 600    | 1.25        | Page titles            |
 
-### Line Height Tokens
-
-| Token    | Value | Use                    |
-|----------|-------|------------------------|
-| `tight`  | 1.25  | Headings, labels       |
-| `normal` | 1.5   | Body text, paragraphs  |
-| `relaxed`| 1.75  | Long-form content      |
-
 **Never use 700/bold.** Differentiate with color.
 
 ## Spacing
 
-4px base grid. All spacing is a multiple of 4.
+4px base grid. All spacing multiples of 4.
 
 | Token | Value | Use                |
 |-------|-------|--------------------|
@@ -135,27 +141,23 @@ Note: `tx-3` meets WCAG AA for large text only. Use exclusively for disabled sta
 
 ### Focus (Universal)
 
-- `outline: 2px solid accent-stroke`
-- `outline-offset: 2px`
-- Always visible — never remove without replacement
-
 ```css
-/* Focus utility */
 :focus-visible {
   outline: 2px solid var(--accent-stroke);
   outline-offset: 2px;
 }
-
-/* Never do this */
-:focus { outline: none; } /* ✗ Removes accessibility */
 ```
 
 ## Transitions
 
-- Properties: `background-color`, `border-color` only
+**For hover/focus color changes:**
+- Properties: `background-color`, `border-color`
 - Duration: 150ms
 - Easing: ease
-- Never animate size, position, or layout
+
+**For motion/movement:** defer to `web-ui-patterns` (use `transform` + `opacity` only)
+
+**Never:** animate size, position, layout, or use `transition: all`
 
 ## CSS Tokens
 
@@ -181,8 +183,5 @@ Note: `tx-3` meets WCAG AA for large text only. Use exclusively for disabled sta
   --radius-lg: 8px;
   --font-sans: 'Source Sans 3', system-ui, sans-serif;
   --font-mono: 'Monaspace Argon', 'SF Mono', monospace;
-  --leading-tight: 1.25;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.75;
 }
 ```

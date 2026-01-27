@@ -1,6 +1,9 @@
 # Generated/session-specific knowledge
 skills/learned/
 
+# Personal commands
+commands/funscript.md
+
 # OS files
 .DS_Store
 Thumbs.db
