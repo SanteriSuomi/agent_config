@@ -36,3 +36,4 @@ desktop.ini
 
 # Node modules (if any skills have dependencies)
 node_modules/
+.skill-lock.json

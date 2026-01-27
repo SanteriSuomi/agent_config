@@ -2,7 +2,7 @@
 
 > Last reviewed: 2026-01-27
 
-Shared AI agent configuration for Claude Code and OpenCode. Single source of truth via symlinks.
+Personal AI agent configuration for Claude Code and OpenCode. Single source of truth via symlinks.
 
 ## What's Here
 
@@ -11,8 +11,8 @@ Shared AI agent configuration for Claude Code and OpenCode. Single source of tru
 | `AGENTS.md` | Global rules loaded every session (67 lines) |
 | `agents/` | 4 subagents: researcher, implementer, code-quality, security-auditor |
 | `skills/` | 11 auto-loading skills (UI, backend, security, tools) |
-| `skills/.unused/` | Archived skills (worktrunk, skill-judge) |
 | `commands/` | Manual slash commands (skill-judge) |
+| `.unused/` | Archived skills (worktrunk, skill-judge) |
 
 ## Why This Setup
 
@@ -36,7 +36,7 @@ Agent/skill files use dual frontmatter — each tool reads its fields, ignores t
 
 ### Archiving unused skills
 
-Move to `skills/.unused/` — keeps history, stops auto-loading.
+Move to `.unused/` — keeps history, stops auto-loading.
 
 ## Dependencies
 
@@ -58,12 +58,6 @@ New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\AGENTS.
 ## Gotchas
 
 - **Skills with `source:` frontmatter** are from external repos — check `last-synced:` before editing
-- **`skills/.unused/`** is tracked in git but skills inside don't auto-load
+- **`.unused/`** is tracked in git but skills inside don't auto-load
 - **Circular symlinks** will break loading — verify with `ls -la`
 - **OpenCode uses `agent/`** (singular), Claude Code uses `agents/` (plural)
-
-## Related
-
-- [Claude Code Skills Docs](https://docs.anthropic.com/en/docs/claude-code/skills)
-- [OpenCode Skills Docs](https://opencode.ai/docs/skills)
-- [AGENTS.md Specification](https://agents.md/)
