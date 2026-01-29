@@ -2,7 +2,7 @@
 name: crafting-effective-readmes
 description: "Write effective READMEs matched to audience and project type. AUTO-LOAD when: creating README, updating README, documenting a project. Triggers: 'write a readme', 'create readme', 'update readme', 'add documentation', 'how should I document this', README.md, project docs."
 source: https://github.com/softaworks/agent-toolkit/tree/main/skills/crafting-effective-readmes
-last-synced: 2026-01-23
+last-synced: 2026-01-29
 metadata:
   author: softaworks
   version: "1.0.0"

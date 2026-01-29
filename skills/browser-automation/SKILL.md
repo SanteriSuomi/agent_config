@@ -3,7 +3,7 @@ name: browser-automation
 description: 'Browser automation with persistent page state. Use proactively when relevant (e.g., testing web app features during development, verifying UI changes, E2E testing). Also use when users ask to navigate websites, fill forms, take screenshots, extract web data, or automate browser workflows. Triggers: "go to [url]", "open website", "visit", "click on", "fill form", "screenshot", "scrape", "test the website", "log into".'
 allowed-tools: Bash(agent-browser:*)
 source: https://github.com/vercel-labs/agent-browser/blob/main/skills/agent-browser/SKILL.md
-last-synced: 2026-01-23
+last-synced: 2026-01-29
 ---
 
 # Browser Automation with agent-browser
@@ -341,9 +341,13 @@ agent-browser --cdp 9222 snapshot                         # Connect via CDP
 # Use cloud browser (Browserbase, Browser Use)
 agent-browser -p browserbase open example.com
 # Or set AGENT_BROWSER_PROVIDER=browserbase
+# Or set AGENT_BROWSER_PROVIDER=browseruse
 
 # Persistent profiles (retain cookies, localStorage across restarts)
 agent-browser --profile myprofile open example.com
+
+# Ignore HTTPS certificate errors (for local dev with self-signed certs)
+agent-browser open https://localhost:8443 --ignore-https-errors
 ```
 
 ## References
