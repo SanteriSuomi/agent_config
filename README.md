@@ -1,6 +1,6 @@
 # ~/.agents
 
-> Last reviewed: 2026-01-27
+> Last reviewed: 2026-01-29
 
 Personal AI agent configuration for Claude Code and OpenCode. Single source of truth via symlinks.
 
@@ -8,11 +8,12 @@ Personal AI agent configuration for Claude Code and OpenCode. Single source of t
 
 | Path | Purpose |
 |------|---------|
-| `AGENTS.md` | Global rules loaded every session (67 lines) |
+| `AGENTS.md` | Global rules loaded every session |
 | `agents/` | 4 subagents: researcher, implementer, code-quality, security-auditor |
-| `skills/` | 11 auto-loading skills (UI, backend, security, tools) |
-| `commands/` | Manual slash commands (skill-judge) |
-| `.unused/` | Archived skills (worktrunk, skill-judge) |
+| `skills/` | 7 auto-loading skills (browser, docs, docker, logging, readme, security) |
+| `commands/` | Manual slash commands: capture-skill, pdf, skill-judge |
+| `config/` | Tool configs (claude-code.json, opencode.json) |
+| `inactive/` | Archived skills: design-styles/, project-specific/ |
 
 ## Why This Setup
 
@@ -36,7 +37,7 @@ Agent/skill files use dual frontmatter — each tool reads its fields, ignores t
 
 ### Archiving unused skills
 
-Move to `.unused/` — keeps history, stops auto-loading.
+Move to `inactive/` — keeps history, stops auto-loading.
 
 ## Dependencies
 
@@ -48,16 +49,18 @@ New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\agents" -Target 
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\skills" -Target "$env:USERPROFILE\.agents\skills"
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\commands" -Target "$env:USERPROFILE\.agents\commands"
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\CLAUDE.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\settings.json" -Target "$env:USERPROFILE\.agents\config\claude-code.json"
 
 # OpenCode
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\agent" -Target "$env:USERPROFILE\.agents\agents"
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\skills" -Target "$env:USERPROFILE\.agents\skills"
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\AGENTS.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\opencode.json" -Target "$env:USERPROFILE\.agents\config\opencode.json"
 ```
 
 ## Gotchas
 
 - **Skills with `source:` frontmatter** are from external repos — check `last-synced:` before editing
-- **`.unused/`** is tracked in git but skills inside don't auto-load
+- **`inactive/`** is tracked in git but skills inside don't auto-load
 - **Circular symlinks** will break loading — verify with `ls -la`
 - **OpenCode uses `agent/`** (singular), Claude Code uses `agents/` (plural)
