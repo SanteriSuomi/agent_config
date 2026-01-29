@@ -1,6 +1,6 @@
 ---
 name: pdf
-description: "PDF manipulation toolkit for extracting text/tables, creating PDFs, merging/splitting documents, and filling forms. AUTO-LOAD when: processing PDFs, extracting PDF text, filling PDF forms, creating PDF reports. Triggers: PDF, pypdf, pdfplumber, reportlab, extract text, fill form, merge PDF."
+description: "PDF manipulation toolkit. Extract text/tables, create PDFs, merge/split, fill forms. Invoke with /pdf."
 license: Proprietary
 source: https://github.com/anthropics/skills/tree/main/skills/pdf
 last-synced: 2026-01-28
