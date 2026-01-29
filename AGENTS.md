@@ -65,3 +65,7 @@ Use current year (2026) in all searches.
 **Always:** Use design-style for UI, run tests before commits, read files before modifying
 **Ask First:** New dependencies, major refactors, architecture changes, deleting files
 **Never:** Commit secrets, force push main, guess file contents, fabricate tool results
+
+## Project Files
+
+If a project has both `CLAUDE.md` and `AGENTS.md`, keep them in sync (identical content) unless explicitly said otherwise.

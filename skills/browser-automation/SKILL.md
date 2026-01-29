@@ -407,3 +407,17 @@ Refs change after DOM updates. Always re-snapshot:
 agent-browser --session test click @e1
 agent-browser --session test snapshot -i  # Get fresh refs
 ```
+
+### "Daemon failed to start" Error (Windows)
+
+The Rust CLI may fail to spawn the daemon process. Run the Node.js daemon manually:
+
+```bash
+# Clean any stale state files first
+rm -f ~/.agent-browser/*.pid ~/.agent-browser/*.port ~/.agent-browser/*.stream
+
+# Start daemon manually in a separate terminal (keep it running)
+node C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/dist/daemon.js
+```
+
+Then use the CLI normally — it connects to the running daemon instead of spawning one.
