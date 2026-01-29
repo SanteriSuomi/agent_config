@@ -1,0 +1,10 @@
+{
+  "alwaysThinkingEnabled": true,
+  "autoUpdatesChannel": "latest",
+  "permissions": {
+    "allow": [
+      "WebFetch",
+      "WebSearch"
+    ]
+  }
+}

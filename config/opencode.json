@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "zai-coding-plan/glm-4.7",
+  "permission": {
+    "webfetch": "allow",
+    "websearch": "allow"
+  },
+  "provider": {
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "MiniMax M2.1 (local)",
+      "options": {
+        "baseURL": "http://192.168.0.233:8517/v1"
+      },
+      "models": {
+        "unsloth/MiniMax-M2.1-GGUF:Q3_K_XL": {
+          "name": "MiniMax M2.1 Q3_K_XL",
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        }
+      }
+    }
+  }
+}
