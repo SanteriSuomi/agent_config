@@ -32,7 +32,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 - Imperative form ("Add feature" not "Added feature")
 - Only commit when explicitly asked
 - Run tests/lint first
-- No watermarks or signatures
+- NEVER add watermarks, signatures, or "Co-Authored-By" lines
 
 ## Testing
 
