@@ -24,67 +24,40 @@ C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/bin/agent-browser-
 
 The PowerShell wrapper (`agent-browser.ps1`) works correctly in PowerShell terminals.
 
-## Sessions (REQUIRED)
-
-**Always use uniquely named sessions** — one per task, feature, or test scenario:
-
-```bash
-# Name sessions by what you're testing
-agent-browser --session cv-editor-test open http://localhost:3000/editor
-agent-browser --session settings-page open http://localhost:3000/settings
-agent-browser --session mobile-nav open http://localhost:3000
-```
-
-### Naming Convention
-
-Use descriptive names based on context:
-- `feature-login-flow` — testing login feature
-- `bug-123-repro` — reproducing issue #123
-- `e2e-checkout` — E2E checkout test
-- `mobile-responsive` — mobile viewport testing
-
-### Why Unique Sessions?
-- **Avoid "Browser not launched" errors** — stale/reused sessions cause this
-- **Clean state per task** — no leftover cookies, localStorage, or page state
-- **Parallel testing** — run multiple browsers simultaneously
-- **Isolation** — each task gets independent browser instance
-- **Debuggability** — know which session belongs to which task
-
-### Manage Sessions
-```bash
-agent-browser session list                    # Show active sessions
-agent-browser --session feature-x close       # Close specific session
-```
-
-### Anti-pattern: Reusing session names
-```bash
-# BAD: Reusing generic names leads to stale state
-agent-browser --session test open ...   # Used yesterday
-agent-browser --session test open ...   # Today: "Browser not launched" error
-
-# GOOD: Unique names per task
-agent-browser --session test-jan24-cv open ...
-```
-
 ## Quick start
 
 ```bash
-# Use a unique session name for your task
-agent-browser --session my-feature-test open <url>    # Navigate to page
-agent-browser --session my-feature-test snapshot -i   # Get interactive elements with refs
-agent-browser --session my-feature-test click @e1     # Click element by ref
-agent-browser --session my-feature-test fill @e2 "text"  # Fill input by ref
-agent-browser --session my-feature-test close         # Close browser
+agent-browser open <url>       # Navigate to page
+agent-browser snapshot -i      # Get interactive elements with refs
+agent-browser click @e1        # Click element by ref
+agent-browser fill @e2 "text"  # Fill input by ref
+agent-browser close            # Close browser
 ```
 
 ## Core workflow
 
-1. **Create unique session**: Choose a descriptive name for your task
-2. **Navigate**: `agent-browser --session <task-name> open <url>`
-3. **Snapshot**: `agent-browser --session <task-name> snapshot -i` (returns refs like `@e1`, `@e2`)
-4. **Interact** using refs from the snapshot
-5. **Re-snapshot** after navigation or significant DOM changes
-6. **Close**: `agent-browser --session <task-name> close`
+1. **Navigate**: `agent-browser open <url>`
+2. **Snapshot**: `agent-browser snapshot -i` (returns refs like `@e1`, `@e2`)
+3. **Interact** using refs from the snapshot
+4. **Re-snapshot** after navigation or significant DOM changes
+5. **Close**: `agent-browser close`
+
+## Sessions (optional)
+
+Named sessions provide isolation for parallel testing or when you need multiple browser instances:
+
+```bash
+agent-browser --session feature-test open http://localhost:3000
+agent-browser --session feature-test snapshot -i
+agent-browser --session feature-test close
+
+# Parallel browsers
+agent-browser --session test1 open site-a.com
+agent-browser --session test2 open site-b.com
+agent-browser session list                    # Show active sessions
+```
+
+See `~/.agents/skills/browser-automation/references/session-management.md` for details.
 
 ## Limitations
 
@@ -272,41 +245,33 @@ pm2 delete devserver                       # Remove when done with project
 ## Example: Form submission
 
 ```bash
-agent-browser --session form open https://example.com/form
-agent-browser --session form snapshot -i
+agent-browser open https://example.com/form
+agent-browser snapshot -i
 # Output shows: textbox "Email" [ref=e1], textbox "Password" [ref=e2], button "Submit" [ref=e3]
 
-agent-browser --session form fill @e1 "user@example.com"
-agent-browser --session form fill @e2 "password123"
-agent-browser --session form click @e3
-agent-browser --session form wait --load networkidle
-agent-browser --session form snapshot -i  # Check result
-agent-browser --session form close
+agent-browser fill @e1 "user@example.com"
+agent-browser fill @e2 "password123"
+agent-browser click @e3
+agent-browser wait --load networkidle
+agent-browser snapshot -i  # Check result
+agent-browser close
 ```
 
 ## Example: Authentication with saved state
 
 ```bash
 # Login once
-agent-browser --session auth open https://app.example.com/login
-agent-browser --session auth snapshot -i
-agent-browser --session auth fill @e1 "username"
-agent-browser --session auth fill @e2 "password"
-agent-browser --session auth click @e3
-agent-browser --session auth wait --url "**/dashboard"
-agent-browser --session auth state save auth.json
+agent-browser open https://app.example.com/login
+agent-browser snapshot -i
+agent-browser fill @e1 "username"
+agent-browser fill @e2 "password"
+agent-browser click @e3
+agent-browser wait --url "**/dashboard"
+agent-browser state save auth.json
 
-# Later sessions: load saved state
-agent-browser --session dashboard state load auth.json
-agent-browser --session dashboard open https://app.example.com/dashboard
-```
-
-## Sessions (parallel browsers)
-
-```bash
-agent-browser --session test1 open site-a.com
-agent-browser --session test2 open site-b.com
-agent-browser session list
+# Later: load saved state
+agent-browser state load auth.json
+agent-browser open https://app.example.com/dashboard
 ```
 
 ## JSON output (for parsing)
@@ -320,19 +285,19 @@ agent-browser get text @e1 --json
 ## Debugging
 
 ```bash
-agent-browser --session debug open example.com --headed   # Show browser window
-agent-browser --session debug console                     # View console messages
-agent-browser --session debug errors                      # View page errors
-agent-browser --session debug network requests            # View network requests (v0.7+)
-agent-browser --session debug storage local               # View localStorage (v0.7+)
-agent-browser --session debug record start ./debug.webm   # Record from current page
-agent-browser --session debug record stop                 # Save recording
-agent-browser --session debug console --clear             # Clear console
-agent-browser --session debug errors --clear              # Clear errors
-agent-browser --session debug highlight @e1               # Highlight element
-agent-browser --session debug trace start                 # Start recording trace
-agent-browser --session debug trace stop trace.zip        # Stop and save trace
-agent-browser --cdp 9222 snapshot                         # Connect via CDP
+agent-browser open example.com --headed   # Show browser window
+agent-browser console                     # View console messages
+agent-browser errors                      # View page errors
+agent-browser network requests            # View network requests
+agent-browser storage local               # View localStorage
+agent-browser record start ./debug.webm   # Record from current page
+agent-browser record stop                 # Save recording
+agent-browser console --clear             # Clear console
+agent-browser errors --clear              # Clear errors
+agent-browser highlight @e1               # Highlight element
+agent-browser trace start                 # Start recording trace
+agent-browser trace stop trace.zip        # Stop and save trace
+agent-browser --cdp 9222 snapshot         # Connect via CDP
 ```
 
 ## Cloud Providers & Profiles
@@ -356,7 +321,7 @@ For detailed guides, load as needed:
 
 - `~/.agents/skills/browser-automation/references/workarounds.md` — **Platform fixes, complex editors, Shadow DOM, iframes**
 - `~/.agents/skills/browser-automation/references/authentication.md` — Auth patterns
-- `~/.agents/skills/browser-automation/references/session-management.md` — Session lifecycle
+- `~/.agents/skills/browser-automation/references/session-management.md` — Session lifecycle (optional)
 - `~/.agents/skills/browser-automation/references/snapshot-refs.md` — Snapshot refs explained
 - `~/.agents/skills/browser-automation/references/proxy-support.md` — Proxy configuration
 - `~/.agents/skills/browser-automation/references/video-recording.md` — Recording details
@@ -365,11 +330,11 @@ For detailed guides, load as needed:
 
 ### "Browser not launched" Error
 
-Use a fresh named session:
+Close any stale browser state and try again:
 ```bash
-agent-browser --session fresh123 open http://example.com
+agent-browser close
+agent-browser open http://example.com
 ```
-This avoids stale default session state.
 
 ### Windows Git Bash: No Output
 
@@ -377,7 +342,7 @@ The npm wrapper (`agent-browser.cmd`) doesn't produce stdout in Git Bash. Soluti
 
 1. **Use direct executable** (recommended):
    ```bash
-   C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/bin/agent-browser-win32-x64.exe --session test open http://example.com
+   C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/bin/agent-browser-win32-x64.exe open http://example.com
    ```
 
 2. **Use PowerShell** instead of Git Bash - the `.ps1` wrapper works correctly.
@@ -408,8 +373,8 @@ exit $ret
 
 Refs change after DOM updates. Always re-snapshot:
 ```bash
-agent-browser --session test click @e1
-agent-browser --session test snapshot -i  # Get fresh refs
+agent-browser click @e1
+agent-browser snapshot -i  # Get fresh refs
 ```
 
 ### "Daemon failed to start" Error (Windows)

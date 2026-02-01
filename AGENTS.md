@@ -13,6 +13,8 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 └── hooks/                  # Automation hooks
 ```
 
+**IMPORTANT:** Always modify files in `~/.agents/` — never `~/.claude/` or other symlinked directories. The symlinks ensure changes propagate automatically.
+
 **Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
 
 ## Code
@@ -20,6 +22,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 - Explicit named imports, no wildcards or barrel files
 - Case-sensitive paths always
 - Strict mode, type-safe code
+- Omit explicit return types unless needed for clarity or compiler requirements
 - Constants: local if single-use, shared directory if reused
 
 ## Comments
