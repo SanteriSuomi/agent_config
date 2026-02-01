@@ -7,7 +7,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 ```
 ~/.agents/                  # Source of truth (symlinked to ~/.claude/, ~/.config/opencode/)
 ├── AGENTS.md               # This file (loaded every session)
-├── agents/                 # Subagents: researcher, implementer, code-quality, security-auditor
+├── agents/                 # Custom subagents
 ├── skills/                 # Auto-loading contextual skills
 ├── commands/               # Slash commands
 └── hooks/                  # Automation hooks
@@ -17,11 +17,16 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 
 **Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
 
+**Git Bash quirks:**
+- Path conversion: `/path` becomes `C:/Program Files/Git/path`. Use `MSYS_NO_PATHCONV=1` prefix for literal paths.
+- Output capture: Shell wrappers may not capture output. Use `.cmd` suffix (e.g., `pnpm.cmd run test`).
+
 ## Code
 
 - Explicit named imports, no wildcards or barrel files
 - Case-sensitive paths always
 - Strict mode, type-safe code
+- Types must accurately reflect reality (optional fields should be `?`, nullable fields should include `| null`)
 - Omit explicit return types unless needed for clarity or compiler requirements
 - Constants: local if single-use, shared directory if reused
 
@@ -62,6 +67,17 @@ For web apps: use `browser-automation` skill to verify UI changes work.
 ## Web Search
 
 Use current year (2026) in all searches.
+
+## Context Management
+
+**REQUIRED:** When starting any feature or task, use subagents for exploration and research. Do not consume main context with discovery work.
+
+- **Explore agent:** codebase navigation, finding files, understanding architecture
+- **Researcher agent:** web searches, documentation lookups, API references
+
+Only run grep/glob/websearch directly in the main context when:
+1. The query is trivial (single file lookup, known path)
+2. Results are needed immediately for a decision already in progress
 
 ## Boundaries
 
