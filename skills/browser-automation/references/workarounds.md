@@ -29,6 +29,24 @@ The `.ps1` wrapper works correctly in PowerShell terminals.
 
 ---
 
+### Problem: "Daemon failed to start" error
+
+On Windows, the CLI may fail to auto-spawn the daemon process.
+
+### Solution: Start daemon manually in background
+
+```bash
+# Clean stale state files first
+rm -f ~/.agent-browser/*.pid ~/.agent-browser/*.port ~/.agent-browser/*.stream
+
+# Start daemon in background (run_in_background: true in Claude Code)
+node C:/Users/sants/AppData/Roaming/npm/node_modules/agent-browser/dist/daemon.js &
+```
+
+**Important:** The daemon is a long-running process - it doesn't exit or produce output. This "stalling" behavior is expected. It sits and listens for CLI commands. After starting it in the background, wait 2-3 seconds before issuing CLI commands.
+
+---
+
 ## Complex Text Editors
 
 ### Monaco Editor (VS Code-based)
