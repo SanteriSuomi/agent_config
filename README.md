@@ -1,7 +1,5 @@
 # ~/.agents
 
-> Last reviewed: 2026-01-29
-
 Personal AI agent configuration for Claude Code and OpenCode. Single source of truth via symlinks.
 
 ## What's Here
