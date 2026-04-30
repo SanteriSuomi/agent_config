@@ -1,10 +1,11 @@
 {
-  "alwaysThinkingEnabled": true,
-  "autoUpdatesChannel": "latest",
   "permissions": {
     "allow": [
       "WebFetch",
       "WebSearch"
     ]
-  }
+  },
+  "alwaysThinkingEnabled": true,
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true
 }

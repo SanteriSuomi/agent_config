@@ -7,13 +7,21 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 ```
 ~/.agents/                  # Source of truth (symlinked to ~/.claude/, ~/.config/opencode/)
 ├── AGENTS.md               # This file (loaded every session)
-├── agents/                 # Custom subagents
-├── skills/                 # Auto-loading contextual skills
+├── agents-opencode/        # OpenCode-specific custom subagents
+├── agents-claude/          # Claude-specific custom subagents
+├── skills-opencode/        # OpenCode-specific auto-loading skills
+├── skills-claude/          # Claude-specific auto-loading skills
 ├── commands/               # Slash commands
 └── hooks/                  # Automation hooks
 ```
 
-**IMPORTANT:** Always modify files in `~/.agents/` — never `~/.claude/` or other symlinked directories. The symlinks ensure changes propagate automatically.
+**Platform-specific agents/skills:** OpenCode and Claude have incompatible frontmatter formats. Each tool reads from its own directory:
+- OpenCode: `~/.config/opencode/agents/` → `~/.agents/agents-opencode/`
+- OpenCode: `~/.config/opencode/skills/` → `~/.agents/skills-opencode/`
+- Claude: `~/.claude/agents/` → `~/.agents/agents-claude/`
+- Claude: `~/.claude/skills/` → `~/.agents/skills-claude/`
+
+**IMPORTANT:** Always modify files in `~/.agents/` — never `~/.claude/` or `~/.config/opencode/`. The symlinks ensure changes propagate automatically.
 
 **Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
 
