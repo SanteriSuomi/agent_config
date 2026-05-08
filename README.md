@@ -1,64 +1,67 @@
 # ~/.agents
 
-Personal AI agent configuration for Claude Code and OpenCode. Single source of truth via symlinks.
+Personal AI agent configuration. Single source of truth via junctions to `~/.config/opencode/` and `~/.claude/`.
 
-## What's Here
+## Structure
 
-| Path | Purpose |
-|------|---------|
-| `AGENTS.md` | Global rules loaded every session |
-| `agents/` | 4 subagents: researcher, implementer, code-quality, security-auditor |
-| `skills/` | 7 auto-loading skills (browser, docs, docker, logging, readme, security) |
-| `commands/` | Manual slash commands: capture-skill, pdf, skill-judge |
-| `config/` | Tool configs (claude-code.json, opencode.json) |
-| `inactive/` | Archived skills: design-styles/, project-specific/ |
+```
+~/.agents/
+├── AGENTS.md              # Global rules loaded every session
+├── agents/                # Subagents
+│   ├── researcher.md      # Research: docs, APIs, best practices
+│   └── security-auditor.md # Security: OWASP, dependency audits
+├── skills/                # Auto-loading skills
+│   ├── browser-automation/ # Browser testing via agent-browser
+│   ├── context7-api/      # Library documentation lookup
+│   └── security/          # Security anti-patterns (25+ CWE refs)
+├── commands/              # Slash commands
+│   ├── commit.md          # /commit — analyze diff, create commit
+│   ├── pr.md              # /pr — create pull request
+│   ├── debug.md           # /debug — trace errors to root cause
+│   └── review.md          # /review — review uncommitted changes
+└── config/
+    └── opencode.json      # OpenCode configuration
+```
 
-## Why This Setup
+## Junctions
 
-One config, two tools. Claude Code and OpenCode have different config paths but similar formats. Symlinks point both tools to `~/.agents/`, so changes apply everywhere.
+Both `~/.config/opencode/` and `~/.claude/` junction to `~/.agents/` for `agents/`, `skills/`, and `commands/`. Create with admin PowerShell:
 
-Agent/skill files use dual frontmatter — each tool reads its fields, ignores the rest.
+```powershell
+# OpenCode
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\agents" -Target "$env:USERPROFILE\.agents\agents"
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\skills" -Target "$env:USERPROFILE\.agents\skills"
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.config\opencode\commands" -Target "$env:USERPROFILE\.agents\commands"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\AGENTS.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\opencode.json" -Target "$env:USERPROFILE\.agents\config\opencode.json"
+
+# Claude Code
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\agents" -Target "$env:USERPROFILE\.agents\agents"
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\skills" -Target "$env:USERPROFILE\.agents\skills"
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\commands" -Target "$env:USERPROFILE\.agents\commands"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\CLAUDE.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
+```
 
 ## How to Extend
 
 ### Adding a skill
 
-1. Create `skills/<name>/SKILL.md`
-2. Add frontmatter with `name` and trigger-rich `description`
-3. Skill auto-discovers via symlinks
+1. Create `skills/<name>/SKILL.md` with frontmatter: `name`, `description`
+2. Auto-discovered via junctions
 
 ### Adding an agent
 
-1. Create `agents/<name>.md`
-2. Add dual frontmatter (Claude Code + OpenCode fields)
-3. Agent auto-discovers via symlinks
+1. Create `agents/<name>.md` with OpenCode frontmatter: `description`, `mode`, `permission`
+2. Auto-discovered via junctions
 
-### Archiving unused skills
+### Adding a command
 
-Move to `inactive/` — keeps history, stops auto-loading.
+1. Create `commands/<name>.md` — flat file, not subdirectory
+2. Use `$ARGUMENTS` for user input
+3. Available as `/<name>` in the TUI
 
-## Dependencies
+## Notes
 
-Symlinks to `~/.claude/` and `~/.config/opencode/`. Create with admin PowerShell:
-
-```powershell
-# Claude Code
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\agents" -Target "$env:USERPROFILE\.agents\agents"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\skills" -Target "$env:USERPROFILE\.agents\skills"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\commands" -Target "$env:USERPROFILE\.agents\commands"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\CLAUDE.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\settings.json" -Target "$env:USERPROFILE\.agents\config\claude-code.json"
-
-# OpenCode
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\agent" -Target "$env:USERPROFILE\.agents\agents"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\skills" -Target "$env:USERPROFILE\.agents\skills"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\AGENTS.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\opencode\opencode.json" -Target "$env:USERPROFILE\.agents\config\opencode.json"
-```
-
-## Gotchas
-
-- **Skills with `source:` frontmatter** are from external repos — check `last-synced:` before editing
-- **`inactive/`** is tracked in git but skills inside don't auto-load
-- **Circular symlinks** will break loading — verify with `ls -la`
-- **OpenCode uses `agent/`** (singular), Claude Code uses `agents/` (plural)
+- Agent/skill files are OpenCode format. Both tools ignore unknown frontmatter keys.
+- Commands are flat `.md` files (not `SKILL.md` in subdirectories).
+- The `security` skill is loaded on-demand by the `security-auditor` agent via `skill({ name: "security" })`.

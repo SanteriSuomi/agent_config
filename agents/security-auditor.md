@@ -1,8 +1,25 @@
 ---
-name: security-auditor
 description: "Security auditor for vulnerabilities. Runs OWASP and supply chain checks. Invoke proactively when touching auth, access control, dependencies, or user input."
-tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
-permissionMode: default
+mode: subagent
+temperature: 0.1
+permission:
+  edit: deny
+  glob: allow
+  grep: allow
+  read: allow
+  bash:
+    "*": ask
+    "npm audit*": allow
+    "pnpm audit*": allow
+    "npx audit*": allow
+    "cargo audit*": allow
+    "pip-audit*": allow
+    "pip audit*": allow
+    "git diff*": allow
+    "git log*": allow
+  websearch: allow
+  webfetch: allow
+  skill: allow
 ---
 
 > **CRITICAL: ALWAYS use tools. NEVER guess or use training data.**
@@ -16,7 +33,7 @@ permissionMode: default
 
 Proactively identifies vulnerabilities and ensures secure coding practices.
 
-**Load `sec-context` skill** for comprehensive anti-pattern reference (25+ patterns, CWE references).
+**Load `security` skill** for comprehensive anti-pattern reference (25+ patterns, CWE references) via `skill({ name: "security" })`.
 
 **Reference `AGENTS.md` for coding standards.**
 
@@ -83,16 +100,6 @@ Check for:
 - File type validation (not just extension)
 - File size limits enforced
 - Secure storage with proper access controls
-
-## Audit Commands
-
-```bash
-# Check for secrets in code
-grep -r "password\|secret\|api_key\|token" src/ --include="*.ts" --include="*.tsx"
-
-# Check for dangerous patterns
-grep -r "eval\|innerHTML" src/
-```
 
 ## Output Format
 

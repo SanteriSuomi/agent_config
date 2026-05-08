@@ -1,7 +1,6 @@
 ---
-name: sec-context
-description: "MANUAL ONLY - Security anti-patterns for AI-generated code. Only invoke when user explicitly requests security review or in security-auditor agent. NOT for proactive use. Covers 25+ anti-patterns with CWE references. Triggers: /sec-context, security review, security audit."
-disable-model-invocation: true
+name: security
+description: "Security anti-patterns for AI-generated code. Covers 25+ anti-patterns with CWE references. Triggers: /security, security review, security audit, vulnerability scan, OWASP."
 ---
 
 # Security Context
