@@ -17,6 +17,8 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 
 **IMPORTANT:** Always modify files in `~/.agents/` — never in `~/.claude/` or `~/.config/opencode/`. Junctions ensure changes propagate automatically.
 
+**Environment variables:** OpenCode MCP servers require API keys in the **process environment** (not `.env` files). Set as persistent user env vars: `[Environment]::SetEnvironmentVariable("KEY", "value", "User")`, then restart OpenCode. See `.env.example` for required keys.
+
 **Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
 
 **Git Bash quirks:**
