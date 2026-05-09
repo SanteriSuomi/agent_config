@@ -10,7 +10,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 ├── agents/                 # Subagents: researcher, security-auditor
 ├── skills/                 # Auto-loading skills: browser-automation, context7-api, security
 ├── commands/               # Slash commands: /commit, /pr, /debug, /review
-└── config/                 # Tool configs: opencode.json
+└── config/                 # Tool configs: opencode.json (MCP servers, providers)
 ```
 
 OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery only.
@@ -43,6 +43,11 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 - Only commit when explicitly asked
 - Run tests/lint first
 - NEVER add watermarks, signatures, or "Co-Authored-By" lines
+
+## Git
+
+- Use `$env:GIT_EDITOR = "true"` before `git rebase --continue` to skip editor prompts on Windows
+- Prefer `git pull --rebase` over `git pull` to avoid merge commits
 
 ## Testing
 
