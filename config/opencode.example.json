@@ -1,0 +1,66 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "zai-coding-plan/glm-5.1",
+  "permission": {
+    "webfetch": "allow",
+    "websearch": "allow",
+    "external_directory": {
+      "~/Projects/**": "allow",
+      "~/.agent-browser": "allow"
+    }
+  },
+  "mcp": {
+    "web-search-prime": {
+      "type": "remote",
+      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "Bearer your_zai_api_key_here"
+      }
+    },
+    "web-reader": {
+      "type": "remote",
+      "url": "https://api.z.ai/api/mcp/web_reader/mcp",
+      "headers": {
+        "Authorization": "Bearer your_zai_api_key_here"
+      }
+    },
+    "zai-vision": {
+      "type": "local",
+      "command": ["npx", "-y", "@z_ai/mcp-server"],
+      "environment": {
+        "Z_AI_API_KEY": "your_zai_api_key_here",
+        "Z_AI_MODE": "ZAI"
+      }
+    },
+    "zread": {
+      "type": "remote",
+      "url": "https://api.z.ai/api/mcp/zread/mcp",
+      "headers": {
+        "Authorization": "Bearer your_zai_api_key_here"
+      }
+    }
+  },
+  "provider": {
+    "llama.cpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama.cpp Qwen3.6-35B Q8_0",
+      "options": {
+        "baseURL": "http://your_local_ip:8525/v1",
+        "apiKey": "sk-dummy"
+      },
+      "models": {
+        "qwen3.6": {
+          "name": "Qwen3.6-35B-A3B Q8_0",
+          "input": [
+            "text",
+            "image"
+          ],
+          "limit": {
+            "context": 262144,
+            "output": 65536
+          }
+        }
+      }
+    }
+  }
+}

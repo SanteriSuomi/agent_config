@@ -28,6 +28,7 @@ desktop.ini
 # Environment / secrets
 .env
 !.env.example
+config/opencode.json
 *.local
 
 # Backup files

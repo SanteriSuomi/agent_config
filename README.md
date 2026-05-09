@@ -20,7 +20,7 @@ Personal AI agent configuration. Single source of truth via junctions to `~/.con
 │   ├── debug.md           # /debug — trace errors to root cause
 │   └── review.md          # /review — review uncommitted changes
 └── config/
-    └── opencode.json      # OpenCode configuration
+    └── opencode.json      # OpenCode configuration (gitignored, see setup)
 ```
 
 ## Junctions
@@ -42,11 +42,30 @@ New-Item -ItemType Junction -Path "$env:USERPROFILE\.claude\commands" -Target "$
 New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\CLAUDE.md" -Target "$env:USERPROFILE\.agents\AGENTS.md"
 ```
 
+## Setup
+
+1. **Clone** this repo to `~/.agents/`
+2. **Copy** the config template and add your API keys:
+   ```powershell
+   Copy-Item config/opencode.example.json config/opencode.json
+   ```
+   Then edit `config/opencode.json` and replace:
+   - `your_zai_api_key_here` → your [Z.AI API key](https://z.ai/manage-apikey/apikey-list) (for MCP servers: search, reader, vision, zread)
+   - `http://your_local_ip:8525/v1` → your local inference server URL (or remove the `provider` block)
+3. **Copy** the env template for skills that need direct API access:
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+   Then edit `.env` and replace:
+   - `your_api_key_here` → your [Context7 API key](https://context7.com/dashboard)
+4. **Create junctions** (see below)
+5. **Restart** OpenCode
+
 ## Environment Variables
 
-API keys for MCP servers are **hardcoded in `config/opencode.json`** (gitignored). This avoids Windows env var inheritance issues where `SetEnvironmentVariable(..., "User")` doesn't propagate to running processes.
+API keys for MCP servers live in `config/opencode.json` (gitignored). The `.env` file is used only by skills that make direct REST API calls (e.g., `context7-api`).
 
-The `.env` file is used only by skills that make direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
+> **Windows note:** OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files. Hardcoding keys in `opencode.json` avoids env var inheritance issues where `SetEnvironmentVariable(..., "User")` doesn't propagate to running processes.
 
 ## How to Extend
 

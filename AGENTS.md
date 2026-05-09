@@ -17,7 +17,7 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 
 **IMPORTANT:** Always modify files in `~/.agents/` — never in `~/.claude/` or `~/.config/opencode/`. Junctions ensure changes propagate automatically.
 
-**Environment variables:** API keys for MCP servers are hardcoded in `config/opencode.json` (gitignored). The `.env` file is used by skills making direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` syntax reads from the process environment, not `.env` files — on Windows, hardcoding avoids env var inheritance issues.
+**Environment variables:** API keys for MCP servers live in `config/opencode.json` (gitignored, see `config/opencode.example.json` template). The `.env` file is used by skills making direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
 
 **Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
 
