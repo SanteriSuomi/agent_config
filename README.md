@@ -44,16 +44,9 @@ New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\CLAUDE.md" -Targ
 
 ## Environment Variables
 
-OpenCode MCP servers require API keys in the **process environment** (not `.env` files). Set them as persistent Windows user environment variables:
+API keys for MCP servers are **hardcoded in `config/opencode.json`** (gitignored). This avoids Windows env var inheritance issues where `SetEnvironmentVariable(..., "User")` doesn't propagate to running processes.
 
-```powershell
-[Environment]::SetEnvironmentVariable("Z_AI_API_KEY", "your_key", "User")
-[Environment]::SetEnvironmentVariable("CONTEXT7_API_KEY", "your_key", "User")
-```
-
-Restart OpenCode after setting. See `.env.example` for all required keys.
-
-> Note: The `.env` file exists for skills that make direct REST API calls (e.g., `context7-api` skill). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
+The `.env` file is used only by skills that make direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
 
 ## How to Extend
 
