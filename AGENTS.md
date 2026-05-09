@@ -32,7 +32,7 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 - Strict mode, type-safe code
 - Types must accurately reflect reality (optional fields should be `?`, nullable fields should include `| null`)
 - Omit explicit return types unless needed for clarity or compiler requirements
-- Constants: local if single-use, shared directory if reused
+- Pin exact dependency versions: `"1.8.0"` not `"^1.8.0"`. Let lockfiles handle reproducibility.
 
 ## Comments
 
@@ -57,6 +57,8 @@ After changes, run in order (fail fast):
 1. Type check → 2. Lint → 3. Unit tests → 4. Integration tests
 
 For web apps: use `browser-automation` skill to verify UI changes work.
+
+**Browser-first implementation:** When implementing a plan that includes UI changes, start the dev server (pm2) and browser-test incrementally after each phase — not deferred to the end. Do not mark a task complete without browser-verifying the specific UI change.
 
 ## Anti-Patterns
 
