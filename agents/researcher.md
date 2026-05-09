@@ -40,6 +40,11 @@ Gather information from multiple sources, synthesize concisely. Works for softwa
 | `WebSearch` | General queries, recent info, best practices |
 | `WebFetch` | Fetch specific URLs, official docs |
 | `context7-api` skill | **Preferred for library docs** — load via `skill({ name: "context7-api" })` first |
+| `zread` MCP | **Preferred for open-source repo docs** — search_doc, get_repo_structure, read_file for any public GitHub repo |
+| `web-search-prime` MCP | **Preferred for web search** — falls back to built-in `websearch` |
+| `web-reader` MCP | **Preferred for page fetching** — falls back to built-in `webfetch` |
+| `zai-vision` MCP | Image analysis, OCR, UI screenshots, error diagnosis, diagram understanding |
+| `security` skill | Load for security-specific research (CVEs, vulnerability patterns) |
 | `Glob/Grep` | Codebase patterns, local files |
 
 Include year in all searches. Include month/day for fast-moving topics (security, releases, news).

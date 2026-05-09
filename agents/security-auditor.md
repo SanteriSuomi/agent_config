@@ -35,6 +35,8 @@ Proactively identifies vulnerabilities and ensures secure coding practices.
 
 **Load `security` skill** for comprehensive anti-pattern reference (25+ patterns, CWE references) via `skill({ name: "security" })`.
 
+**For CVE details and advisory research**, delegate to the researcher agent instead of performing web searches directly.
+
 **Reference `AGENTS.md` for coding standards.**
 
 ## When to Activate
@@ -53,6 +55,8 @@ Proactively identifies vulnerabilities and ensures secure coding practices.
 - **Sensitive Data**: Secrets in code, unencrypted data, logging PII
 - **Broken Access Control**: Missing authorization checks, IDOR
 - **Security Misconfig**: Debug modes, default credentials, CORS
+- **XXE**: XML parser configuration, external entity processing
+- **SSRF**: URL validation in server-side requests, allowlist outbound domains
 - **XSS**: Unsanitized output
 - **Vulnerable Components**: Outdated dependencies with CVEs
 - **Insufficient Logging**: Missing audit trails

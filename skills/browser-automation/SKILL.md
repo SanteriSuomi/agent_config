@@ -602,12 +602,12 @@ agent-browser errors --clear              # Clear errors
 
 For detailed guides, load as needed:
 
-- `~/.agents/skills-opencode/browser-automation/references/workarounds.md` — **Platform fixes, complex editors, Shadow DOM, iframes**
-- `~/.agents/skills-opencode/browser-automation/references/authentication.md` — Auth patterns
-- `~/.agents/skills-opencode/browser-automation/references/session-management.md` — Session lifecycle
-- `~/.agents/skills-opencode/browser-automation/references/snapshot-refs.md` — Snapshot refs explained
-- `~/.agents/skills-opencode/browser-automation/references/proxy-support.md` — Proxy configuration
-- `~/.agents/skills-opencode/browser-automation/references/video-recording.md` — Recording details
+- `~/.agents/skills/browser-automation/references/workarounds.md` — **Platform fixes, complex editors, Shadow DOM, iframes**
+- `~/.agents/skills/browser-automation/references/authentication.md` — Auth patterns
+- `~/.agents/skills/browser-automation/references/session-management.md` — Session lifecycle
+- `~/.agents/skills/browser-automation/references/snapshot-refs.md` — Snapshot refs explained
+- `~/.agents/skills/browser-automation/references/proxy-support.md` — Proxy configuration
+- `~/.agents/skills/browser-automation/references/video-recording.md` — Recording details
 
 ## Troubleshooting
 
@@ -633,3 +633,15 @@ Refs change after DOM updates. Always re-snapshot:
 agent-browser click @e1
 agent-browser snapshot -i  # Get fresh refs
 ```
+
+## Vision Analysis (zai-vision MCP)
+
+For image-based analysis beyond `agent-browser screenshot`, use the `zai-vision` MCP tools:
+
+| Tool | Use For |
+|------|---------|
+| `ui_to_artifact` | Convert UI screenshots to code/specs |
+| `extract_text_from_screenshot` | OCR screenshots, terminals, docs |
+| `diagnose_error_screenshot` | Analyze error snapshots, propose fixes |
+| `ui_diff_check` | Compare two UI screenshots for drift |
+| `image_analysis` | General image understanding |
