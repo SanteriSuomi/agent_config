@@ -45,6 +45,7 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 - Only commit when explicitly asked
 - Run tests/lint first
 - NEVER add watermarks, signatures, or "Co-Authored-By" lines
+- **One commit per branch/PR** — squash all work into a single commit before pushing. Amend as work progresses. Unless explicitly told otherwise, never leave multiple commits on a feature branch.
 
 ## Git
 
