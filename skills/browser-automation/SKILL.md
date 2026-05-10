@@ -406,6 +406,44 @@ Use `--session-name <name>` or `state save`/`state load` so your session
 survives browser restarts. See [references/session-management.md](references/session-management.md)
 and [references/authentication.md](references/authentication.md).
 
+**Windows: `open` hangs indefinitely (v0.26–v0.27)**
+
+Known bug — the daemon sidecar's IPC handshake fails silently on Windows
+(#1308, #1270). Orphaned Chrome processes compound the issue.
+
+**Workaround — start Chrome yourself and connect via `--cdp`:**
+
+```bash
+# 1. Start Chrome with debugging port (use pm2 for async, not &)
+npx pm2 start "chrome.exe" --name chrome-dev -- \
+  --remote-debugging-port=9222 \
+  --user-data-dir="C:\tmp\ab-chrome" \
+  http://localhost:5173
+
+# 2. Connect agent-browser to the running Chrome (bypasses daemon)
+agent-browser --cdp 9222 snapshot -i
+agent-browser --cdp 9222 click @e1
+agent-browser --cdp 9222 fill @e2 "text"
+
+# 3. Clean up when done
+npx pm2 delete chrome-dev
+taskkill //F //IM chrome.exe 2>/dev/null
+```
+
+This completely avoids the daemon spawn — the daemon's IPC initialization
+is the failure point. All commands work normally with `--cdp`.
+
+**Fallback (if `--cdp` isn't available):**
+
+```bash
+# Aggressive cleanup before each session
+agent-browser close --all 2>/dev/null
+taskkill //F //IM chrome.exe 2>/dev/null
+taskkill //F //IM agent-browser-win32-x64.exe 2>/dev/null
+agent-browser doctor --fix
+agent-browser open http://localhost:5173
+```
+
 ## Global flags worth knowing
 
 ```bash
