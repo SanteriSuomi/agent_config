@@ -27,6 +27,7 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 
 ## Code
 
+- Show full file paths when in git worktrees or similar
 - Explicit named imports, no wildcards or barrel files
 - Case-sensitive paths always
 - Strict mode, type-safe code
