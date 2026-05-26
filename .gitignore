@@ -31,6 +31,11 @@ desktop.ini
 config/opencode.json
 *.local
 
+# Clawd context (symlinks to ~/clawd/)
+TOOLS.md
+USER.md
+MEMORY.md
+
 # Backup files
 *.bak
 *.backup

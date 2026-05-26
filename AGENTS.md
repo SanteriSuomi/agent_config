@@ -5,25 +5,22 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 ## Environment
 
 ```
-~/.agents/                  # Source of truth (junctioned to ~/.claude/ and ~/.config/opencode/)
+~/agent_config/             # Source of truth (symlinked to ~/.config/opencode/)
 ├── AGENTS.md               # This file (loaded every session)
 ├── agents/                 # Subagents: researcher, security-auditor
 ├── skills/                 # Auto-loading skills: browser-automation, context7-api, pm2, security
 ├── commands/               # Slash commands: /commit, /pr, /debug, /review
-└── config/                 # Tool configs: opencode.json (MCP servers, providers)
+├── config/                 # Tool configs: opencode.json (MCP servers, providers)
+├── TOOLS.md → ~/clawd/     # Service ports, paths, GPU, network (on-demand)
+├── USER.md → ~/clawd/      # About the user (on-demand)
+└── MEMORY.md → ~/clawd/    # Long-term memory, hard rules, infra history (on-demand)
 ```
 
-OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery only.
-
-**IMPORTANT:** Always modify files in `~/.agents/` — never in `~/.claude/` or `~/.config/opencode/`. Junctions ensure changes propagate automatically.
+**IMPORTANT:** Always modify files in `~/agent_config/` — never directly in `~/.config/opencode/`. Symlinks ensure changes propagate automatically.
 
 **Environment variables:** API keys for MCP servers live in `config/opencode.json` (gitignored, see `config/opencode.example.json` template). The `.env` file is used by skills making direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
 
-**Platform:** Windows with Git Bash. Paths are case-sensitive for cross-platform compatibility.
-
-**Git Bash quirks:**
-- Path conversion: `/path` becomes `C:/Program Files/Git/path`. Use `MSYS_NO_PATHCONV=1` prefix for literal paths.
-- Output capture: Shell wrappers may not capture output. Use `.cmd` suffix (e.g., `pnpm.cmd run test`).
+**Platform:** Linux (Fedora).
 
 ## Code
 
@@ -50,7 +47,6 @@ OpenCode-first config. `~/.claude/` junctions kept for agent/skill discovery onl
 
 ## Git
 
-- Use `$env:GIT_EDITOR = "true"` before `git rebase --continue` to skip editor prompts on Windows
 - Prefer `git pull --rebase` over `git pull` to avoid merge commits
 
 ## Testing
@@ -98,6 +94,12 @@ Only run grep/glob/websearch directly in the main context when:
 **Ask First:** New dependencies, major refactors, architecture changes, deleting files
 **Never:** Commit secrets, force push main, guess file contents, fabricate tool results
 
-## Project Files
+## Shared Context (from Clawdbot)
 
-If a project has both `CLAUDE.md` and `AGENTS.md`, keep them in sync (identical content) unless explicitly said otherwise.
+Symlinks to `~/clawd/` workspace. Read-only — do not edit from OpenCode.
+
+- `TOOLS.md` — read when working with services, ports, paths, GPU, network, Docker
+- `USER.md` — read when personal context about Santeri is relevant
+- `MEMORY.md` — read when infrastructure history, hard rules, or past incidents matter
+
+Do not load these at session start. Only read when the task requires it.
