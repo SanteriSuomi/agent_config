@@ -28,6 +28,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 - Types must accurately reflect reality (optional fields should be `?`, nullable fields should include `| null`)
 - Omit explicit return types unless needed for clarity or compiler requirements
 - Pin exact dependency versions: `"1.8.0"` not `"^1.8.0"`. Let lockfiles handle reproducibility.
+- Pin exact versions in Dockerfiles and install scripts (e.g. `ansible-core==2.20.4`, `sops-v3.13.1`). Verify latest stable version via web search before pinning.
 
 ## Comments
 
