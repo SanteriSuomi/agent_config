@@ -5,9 +5,9 @@ description: "Security anti-patterns for AI-generated code. Covers 25+ anti-patt
 
 # Security Context
 
-> **MANUAL INVOCATION ONLY** — Do not load proactively. Only use when:
-> 1. User explicitly requests security review
-> 2. Running as part of `security-auditor` agent
+> Load when working on security-sensitive code: authentication, authorization,
+> encryption, user input handling, file uploads. Also when the user explicitly
+> requests a security review or running as part of `security-auditor` agent.
 
 Security anti-patterns for AI-generated code. Synthesized from 150+ sources including CVE databases, OWASP, academic research.
 

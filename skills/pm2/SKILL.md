@@ -86,15 +86,6 @@ npx pm2 start scripts/pm2-dev.mjs --name myapp
 npx pm2 logs myapp --lines 5 --nostream
 ```
 
-### Chrome with debugging port (Windows workaround for browser automation)
-
-```bash
-npx pm2 start "chrome.exe" --name chrome-dev -- \
-  --remote-debugging-port=9222 \
-  --user-data-dir="C:\tmp\ab-chrome" \
-  http://localhost:5173
-```
-
 ### Build watcher
 
 ```bash
@@ -162,4 +153,3 @@ then grep for the fields relevant to your investigation.
 - **`pnpm exec pm2` broken on Windows**: Use `npx pm2` or `./node_modules/.bin/pm2` instead.
 - **`interpreter: 'none'` can fail on Windows**: Causes `spawn EFTYPE` for some binaries. Use the `.mjs` wrapper pattern instead.
 - **Non-TTY shells**: Some CLIs (e.g., `drizzle-kit push`) use interactive prompts. Always pass `--force` or `--yes` flags when running under pm2.
-- **Chrome spawns untracked children**: pm2 won't clean up Chrome's child processes. After `pm2 delete`, manually `taskkill //F //IM chrome.exe` (Windows) or `pkill chrome` (Unix).

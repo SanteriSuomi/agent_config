@@ -111,7 +111,7 @@ Use `attach` to connect to a browser that is already running, instead of launchi
 
 ### Attach by channel name
 
-Connect to a running Chrome or Edge instance by its channel name. The browser must have remote debugging enabled.
+Connect to a running Chrome or Edge instance by its channel name. The browser must have remote debugging enabled — navigate to `chrome://inspect/#remote-debugging` in the target browser and check "Allow remote debugging for this browser instance".
 
 ```bash
 # Attach to Chrome
@@ -128,6 +128,8 @@ playwright-cli attach --cdp=msedge-dev
 ```
 
 Supported channels: `chrome`, `chrome-beta`, `chrome-dev`, `chrome-canary`, `msedge`, `msedge-beta`, `msedge-dev`, `msedge-canary`.
+
+When `--session` is not provided, the session is named after the channel (e.g. `--cdp=msedge` creates a session called `msedge`), so parallel attaches to Chrome and Edge don't collide on `default`. Pass `--session=<name>` to override.
 
 ### Attach via CDP endpoint
 

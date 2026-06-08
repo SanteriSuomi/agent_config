@@ -10,20 +10,15 @@ OpenCode agent configuration. Git repo at `~/agent_config/`, symlinked into `~/.
 ├── agents/                 # Subagents
 │   ├── researcher.md       # Research: docs, APIs, best practices
 │   └── security-auditor.md # Security: OWASP, dependency audits
-├── skills/                 # Auto-loading skills
-│   ├── browser-automation/ # Browser testing via agent-browser
-│   ├── context7-api/       # Library documentation lookup
-│   └── security/           # Security anti-patterns (25+ CWE refs)
-├── commands/               # Slash commands
-│   ├── commit.md           # /commit — analyze diff, create commit
-│   ├── pr.md               # /pr — create pull request
-│   ├── debug.md            # /debug — trace errors to root cause
-│   └── review.md           # /review — review uncommitted changes
-├── config/
-│   └── opencode.json       # OpenCode configuration (gitignored, see setup)
-├── TOOLS.md → ~/clawd/     # Service ports, paths, GPU, network (on-demand)
-├── USER.md → ~/clawd/      # About the user (on-demand)
-└── MEMORY.md → ~/clawd/    # Long-term memory, hard rules, infra history (on-demand)
+├── skills/                # Auto-loading skills
+│   ├── playwright-cli/    # Browser automation via Playwright
+│   ├── context7-api/      # Library documentation lookup
+│   ├── pm2/               # Background process management
+│   └── security/          # Security anti-patterns (25+ CWE refs)
+├── commands/              # Slash commands
+│   └── review.md          # /review — architecture, security, code quality review
+└── config/
+    └── opencode.json      # OpenCode configuration (gitignored, see setup)
 ```
 
 ## Symlinks
@@ -63,7 +58,7 @@ These files are owned by Clawdbot (`~/clawd/`). OpenCode reads them on-demand (p
    ```
    Then edit `.env` and replace:
    - `your_api_key_here` → your [Context7 API key](https://context7.com/dashboard)
-4. **Create symlinks** (see above)
+4. **Create junctions** (see above)
 5. **Restart** OpenCode
 
 ## Environment Variables

@@ -8,12 +8,9 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 ~/agent_config/             # Source of truth (symlinked to ~/.config/opencode/)
 ├── AGENTS.md               # This file (loaded every session)
 ├── agents/                 # Subagents: researcher, security-auditor
-├── skills/                 # Auto-loading skills: browser-automation, context7-api, pm2, security
-├── commands/               # Slash commands: /commit, /pr, /debug, /review
-├── config/                 # Tool configs: opencode.json (MCP servers, providers)
-├── TOOLS.md → ~/clawd/     # Service ports, paths, GPU, network (on-demand)
-├── USER.md → ~/clawd/      # About the user (on-demand)
-└── MEMORY.md → ~/clawd/    # Long-term memory, hard rules, infra history (on-demand)
+├── skills/                 # Auto-loading skills: playwright-cli, context7-api, pm2, security
+├── commands/               # Slash commands: /review
+└── config/                 # Tool configs: opencode.json (MCP servers, providers)
 ```
 
 **IMPORTANT:** Always modify files in `~/agent_config/` — never directly in `~/.config/opencode/`. Symlinks ensure changes propagate automatically.
@@ -54,9 +51,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 After changes, run in order (fail fast):
 1. Type check → 2. Lint → 3. Unit tests → 4. Integration tests
 
-For web apps: use `browser-automation` skill to verify UI changes work.
-
-**Browser-first implementation:** When implementing a plan that includes UI changes, start the dev server (use the **pm2** skill) and browser-test incrementally after each phase — not deferred to the end. Do not mark a task complete without browser-verifying the specific UI change.
+For browser automation, use the `playwright-cli` skill. Always use named sessions (`-s=<name>`) for isolation when multiple agents may run in parallel.
 
 ## Anti-Patterns
 
@@ -79,14 +74,7 @@ Use current year (2026) in all searches.
 
 ## Context Management
 
-**REQUIRED:** When starting any feature or task, use subagents for exploration and research. Do not consume main context with discovery work.
-
-- **Explore agent:** codebase navigation, finding files, understanding architecture
-- **Researcher agent:** web searches, documentation lookups, API references
-
-Only run grep/glob/websearch directly in the main context when:
-1. The query is trivial (single file lookup, known path)
-2. Results are needed immediately for a decision already in progress
+Use subagents for exploration and research — do not consume main context with discovery work. **Explore agent** for codebase navigation, **researcher agent** for web searches, documentation, and API references. Only run grep/glob/websearch directly when the query is trivial (single file, known path) or needed immediately for an in-progress decision.
 
 ## Boundaries
 
