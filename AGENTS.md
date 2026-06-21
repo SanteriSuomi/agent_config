@@ -13,11 +13,13 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 └── config/                 # Tool configs: opencode.json (MCP servers, providers)
 ```
 
-**IMPORTANT:** Always modify files in `~/agent_config/` — never directly in `~/.config/opencode/`. Symlinks ensure changes propagate automatically.
+> On Windows the source-of-truth dir is `~/.agents/` instead of `~/agent_config/`; symlink layout into `~/.config/opencode/` is identical.
+
+**IMPORTANT:** Always modify files in the source-of-truth dir (`~/agent_config/` on Fedora, `~/.agents/` on Windows) — never directly in `~/.config/opencode/`. Symlinks ensure changes propagate automatically.
 
 **Environment variables:** API keys for MCP servers live in `config/opencode.json` (gitignored, see `config/opencode.example.json` template). The `.env` file is used by skills making direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
 
-**Platform:** Linux (Fedora).
+**Platforms:** Windows (main host); Linux/Fedora (MiniPC).
 
 ## Code
 
@@ -83,7 +85,7 @@ Use subagents for exploration and research — do not consume main context with 
 **Ask First:** New dependencies, major refactors, architecture changes, deleting files
 **Never:** Commit secrets, force push main, guess file contents, fabricate tool results
 
-## Shared Context (from Clawdbot)
+## Shared Context (from Clawdbot) — MiniPC only
 
 Symlinks to `~/clawd/` workspace. Read-only — do not edit from OpenCode.
 
