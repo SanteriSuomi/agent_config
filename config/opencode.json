@@ -1,0 +1,114 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "zai-coding-plan/glm-5.2",
+  "provider": {
+    "llama-server": {
+      "name": "llama-server (local)",
+      "options": {
+        "baseURL": "http://localhost:8520/v1",
+        "apiKey": "sk-dummy"
+      },
+      "models": {
+        "qwen3.6-35b-a3b-mtp": {
+          "name": "Qwen3.6-35B-A3B (Q8_K_XL, MTP)",
+          "tool_call": true,
+          "reasoning": true,
+          "attachment": false,
+          "cost": { "input": 0, "output": 0 },
+          "limit": { "context": 262144, "output": 32768 }
+        }
+      }
+    }
+  },
+  "permission": {
+    "webfetch": "allow",
+    "websearch": "allow",
+    "external_directory": {
+      "**": "allow"
+    }
+  },
+  "agent": {
+    "build": {
+      "permission": {
+        "edit": "allow",
+        "bash": "allow"
+      }
+    },
+    "plan": {
+      "permission": {
+        "edit": "ask",
+        "bash": {
+          "*": "ask",
+          "ls": "allow",
+          "ls *": "allow",
+          "cat *": "allow",
+          "head *": "allow",
+          "tail *": "allow",
+          "grep *": "allow",
+          "rg *": "allow",
+          "find *": "allow",
+          "wc *": "allow",
+          "stat *": "allow",
+          "file *": "allow",
+          "tree *": "allow",
+          "du *": "allow",
+          "df *": "allow",
+          "pwd": "allow",
+          "echo *": "allow",
+          "diff *": "allow",
+          "which *": "allow",
+          "ps": "allow",
+          "ps *": "allow",
+          "free": "allow",
+          "free *": "allow",
+          "git status*": "allow",
+          "git log*": "allow",
+          "git diff*": "allow",
+          "git show*": "allow",
+          "git branch*": "allow",
+          "git blame*": "allow",
+          "git ls-files*": "allow",
+          "git rev-parse*": "allow",
+          "git remote*": "allow",
+          "git config --get*": "allow",
+          "systemctl status*": "allow",
+          "systemctl list-*": "allow",
+          "journalctl*": "allow",
+          "npm ls*": "allow",
+          "npm view*": "allow"
+        }
+      }
+    }
+  },
+  "mcp": {
+    "web-search-prime": {
+      "type": "remote",
+      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/z_ai_api_key}"
+      }
+    },
+    "web-reader": {
+      "type": "remote",
+      "url": "https://api.z.ai/api/mcp/web_reader/mcp",
+      "headers": {
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/z_ai_api_key}"
+      }
+    },
+    "zai-vision": {
+      "type": "local",
+      "command": ["npx", "-y", "@z_ai/mcp-server"],
+      "environment": {
+        "Z_AI_API_KEY": "{file:~/.config/opencode/secrets/z_ai_api_key}",
+        "Z_AI_MODE": "ZAI"
+      }
+    },
+    "zread": {
+      "type": "remote",
+      "url": "https://api.z.ai/api/mcp/zread/mcp",
+      "headers": {
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/z_ai_api_key}"
+      }
+    }
+  }
+}
