@@ -441,14 +441,15 @@ jq -r '(.metadata.duration // (.actions | map(.at) | max)) / 1000' file.funscrip
 ### Decision tree
 
 ```
-1. VR? (_180, _SBS, _3dh, VR studio prefix, 2:1 aspect ratio, spherical metadata) → XBVR/
-   (check filename for VR tags AND sv3d/st3d boxes in the file)
-2. PMV/HMV? (HMV, PMV, known PMV creator, continuous music track, multi-scene edit) → HMV PMV/
+**Category follows CONTENT TYPE, not VR-ness.** VR is a format, not a category. Only real-person VR studio scenes go to XBVR; VR animations/PMVs/fap-heroes stay with their content type.
+1. Real-person VR? (VR studio scene: SLR/BaDoinkVR/WankzVR/VRCosplayX/VRHush/VRSpy/CzechVR/etc. prefix, real performers, _180/_SBS/_3dh tags, sv3d/st3d boxes) → XBVR/
+   **NOT** for VR animations (→ step 4) or VR-converted PMVs (→ step 2)
+2. PMV/HMV? (HMV, PMV, known PMV creator, continuous music track, multi-scene edit; INCLUDES VR-converted PMVs — keep VR tags in filename) → HMV PMV/
    UNCERTAIN? → Research the creator name, then ask user if still unclear
-3. Fap/Cock Hero? (Fap Hero, Cock Hero, BPM Training, Edge Hero, Beat) → Fap Cock Hero/
-4. Animation? (known animator, game char, SFM/CGI/Blender/3D style) → Animations/
+3. Fap/Cock Hero? (Fap Hero, Cock Hero, BPM Training, Edge Hero, Beat; INCLUDES VR-converted fap heroes) → Fap Cock Hero/
+4. Animation? (known animator, game char, SFM/CGI/Blender/3D style; INCLUDES VR animations — keep VR tags in filename) → Animations/
    UNCERTAIN about creator? → Research the name first
-5. Real footage? → Non-XBVR/
+5. Real non-VR footage? → Non-XBVR/
 6. Uncertain? → Research (web search, eroscripts), then ask as last resort
 7. No funscript match → Report only, DO NOT move
 ```
@@ -827,6 +828,11 @@ find ~/Downloads -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -mtime -7
 - **Mixed case:** Normalize case when comparing filenames
 - **Empty funscripts:** Check action count > 0 before processing
 - **Cross-folder duplicates:** Same video in multiple destination folders — consolidate
+- **Archived videos:** Videos may arrive as archives (`.zip`/`.rar`/`.7z`) — a funscript whose base matches an entry *inside* an archive is **NOT an orphan**. List archive contents before declaring a script unmatched. Extract directly to the destination when local disk is tight.
+- **Corrupt / incomplete downloads:** Active torrents leave half-written files (`moov atom not found`, unreadable by ffprobe). **Gate every video with ffprobe before copy** — never upload or delete a file that fails the readability check. Note: a torrent file can be ffprobe-readable yet still incomplete (moov at front), so cross-check qBittorrent completion %.
+- **Torrent-managed files:** Before deleting local sources, query qBittorrent (`/api/v2/torrents/info` + `/torrents/files?hash=`) for files it manages. **Never delete a file that is seeding or still downloading** — keep its script too so the pair completes later.
+- **Mislabeled / wrong-extension funscripts:** A funscript may be delivered as `.txt` or under a totally wrong filename (e.g. a script named for video A whose content is actually for scene "VSP54"/video B). **Never trust the filename alone** — verify a script matches its video by internal metadata (`metadata.title`/`creator`) and by duration (last action `at` vs video duration, ±a few %). When a video looks scriptless, also scan for `.txt` files whose content starts with `{"actions":`.
+- **Content-duplicate scripts:** Two scripts with identical content can sit under different filenames (same `actions[-1].at` + `actions|length` + `metadata.title`). Fingerprint by `(lastAt, actionCount, title)` to detect redundant copies and discard extras.
 
 ---
 

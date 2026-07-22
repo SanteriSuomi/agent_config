@@ -7,9 +7,9 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 ```
 ~/agent_config/             # Source of truth (symlinked to ~/.config/opencode/)
 ├── AGENTS.md               # This file (loaded every session)
-├── agents/                 # Subagents: researcher, security-auditor
-├── skills/                 # Auto-loading skills: playwright-cli, context7-api, pm2, security
-├── commands/               # Slash commands: /review
+├── agents/                 # Subagents: researcher
+├── skills/                 # Auto-loading skills: playwright-cli, context7-api, pm2, funscript
+├── commands/               # Slash commands (currently empty — scaffolding)
 └── config/                 # Tool configs: opencode.json (MCP servers, providers)
 ```
 
@@ -17,7 +17,7 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 
 **IMPORTANT:** Always modify files in the source-of-truth dir (`~/agent_config/` on Fedora, `~/.agents/` on Windows) — never directly in `~/.config/opencode/`. Symlinks ensure changes propagate automatically.
 
-**Environment variables:** API keys for MCP servers live in `config/opencode.json` (gitignored, see `config/opencode.example.json` template). The `.env` file is used by skills making direct REST API calls (e.g., `context7-api`). OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
+**Environment variables:** `config/opencode.json` is tracked (safe to share — no secrets, only `{file:...}` / `{env:...}` references). Secrets live in `~/.config/opencode/secrets/` (local, not in the repo) and are read via `{file:...}`. The `.env` file holds keys for skills making direct REST API calls (e.g., `context7-api`) and is loaded into the process env. OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
 
 **Platforms:** Windows (main host); Linux/Fedora (MiniPC).
 

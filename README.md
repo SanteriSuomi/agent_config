@@ -8,17 +8,16 @@ OpenCode agent configuration. Git repo at `~/agent_config/`, symlinked into `~/.
 ~/agent_config/             # Source of truth (symlinked to ~/.config/opencode/)
 ├── AGENTS.md               # Global rules loaded every session
 ├── agents/                 # Subagents
-│   ├── researcher.md       # Research: docs, APIs, best practices
-│   └── security-auditor.md # Security: OWASP, dependency audits
+│   └── researcher.md       # Research: docs, APIs, best practices
 ├── skills/                # Auto-loading skills
 │   ├── playwright-cli/    # Browser automation via Playwright
 │   ├── context7-api/      # Library documentation lookup
 │   ├── pm2/               # Background process management
-│   └── security/          # Security anti-patterns (25+ CWE refs)
-├── commands/              # Slash commands
-│   └── review.md          # /review — architecture, security, code quality review
+│   └── funscript/         # NSFW script/video library organizer
+├── commands/              # Slash commands (currently empty — scaffolding)
 └── config/
-    └── opencode.json      # OpenCode configuration (gitignored, see setup)
+    ├── opencode.json      # OpenCode configuration (tracked, no secrets)
+    └── opencode.example.json  # Config template (reference)
 ```
 
 ## Symlinks
@@ -45,13 +44,12 @@ These files are owned by Clawdbot (`~/clawd/`). OpenCode reads them on-demand (p
 ## Setup
 
 1. **Clone** this repo to `~/agent_config/`
-2. **Copy** the config template and add your API keys:
+2. **Create** the secrets file for MCP server auth (`config/opencode.json` references it via `{file:...}`):
    ```bash
-   cp config/opencode.example.json config/opencode.json
+   mkdir -p ~/.config/opencode/secrets
+   echo "your_zai_api_key" > ~/.config/opencode/secrets/z_ai_api_key
    ```
-   Then edit `config/opencode.json` and replace:
-   - `your_zai_api_key_here` → your [Z.AI API key](https://z.ai/manage-apikey/apikey-list) (for MCP servers: search, reader, vision, zread)
-   - `http://your_local_ip:8525/v1` → your local inference server URL (or remove the `provider` block)
+   Get your [Z.AI API key](https://z.ai/manage-apikey/apikey-list) (for MCP servers: search, reader, vision, zread). Adjust the local provider URL in `config/opencode.json` if needed (or remove the `provider` block).
 3. **Copy** the env template for skills that need direct API access:
    ```bash
    cp .env.example .env
@@ -63,7 +61,7 @@ These files are owned by Clawdbot (`~/clawd/`). OpenCode reads them on-demand (p
 
 ## Environment Variables
 
-API keys for MCP servers live in `config/opencode.json` (gitignored). The `.env` file is used only by skills that make direct REST API calls (e.g., `context7-api`).
+`config/opencode.json` is tracked (safe to share — no secrets, only `{file:...}` / `{env:...}` references). Secrets live in `~/.config/opencode/secrets/` (local, not in the repo) and are read via `{file:...}`. The `.env` file holds keys for skills making direct REST API calls (e.g., `context7-api`).
 
 OpenCode's `{env:...}` config syntax reads from the process environment, not `.env` files.
 
@@ -89,5 +87,4 @@ OpenCode's `{env:...}` config syntax reads from the process environment, not `.e
 
 - Agent/skill files are OpenCode format. Both tools ignore unknown frontmatter keys.
 - Commands are flat `.md` files (not `SKILL.md` in subdirectories).
-- The `security` skill is loaded on-demand by the `security-auditor` agent via `skill({ name: "security" })`.
 - Clawd context files (TOOLS.md, USER.md, MEMORY.md) are symlinks — gitignored, read-only from OpenCode.

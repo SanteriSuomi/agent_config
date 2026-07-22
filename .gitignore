@@ -28,7 +28,6 @@ desktop.ini
 # Environment / secrets
 .env
 !.env.example
-config/opencode.json
 *.local
 
 # Clawd context (symlinks to ~/clawd/)

@@ -44,7 +44,6 @@ Gather information from multiple sources, synthesize concisely. Works for softwa
 | `web-search-prime` MCP | **Preferred for web search** — falls back to built-in `websearch` |
 | `web-reader` MCP | **Preferred for page fetching** — falls back to built-in `webfetch` |
 | `zai-vision` MCP | Image analysis, OCR, UI screenshots, error diagnosis, diagram understanding |
-| `security` skill | Load for security-specific research (CVEs, vulnerability patterns) |
 | `Glob/Grep` | Codebase patterns, local files |
 
 Include year in all searches. Include month/day for fast-moving topics (security, releases, news).
