@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "zai-coding-plan/glm-5.2",
+  "model": "zai-coding-plan/glm-5.3",
   "provider": {
     "llama-server": {
       "name": "llama-server (local)",
@@ -45,9 +45,23 @@
             "context": 262144,
             "output": 8192
           }
-        }
-      }
-    }
+        },
+        "unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_S.gguf": {
+          "name": "Qwen3.8-27B (Q4_K_S)",
+          "tool_call": true,
+          "reasoning": true,
+          "attachment": true,
+          "cost": {
+            "input": 0,
+            "output": 0
+          },
+          "limit": {
+            "context": 262144,
+            "output": 8192
+          }
+        },
+      },
+    },
   },
   "permission": {
     "webfetch": "allow",
@@ -390,7 +404,8 @@
           "Test-NetConnection": "allow",
           "Test-NetConnection *": "allow",
           "curl.exe -I *": "allow",
-          "curl.exe --head *": "allow"
+          "curl.exe --head *": "allow",
+          "ffprobe *": "allow"
         }
       }
     }

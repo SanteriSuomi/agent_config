@@ -767,6 +767,17 @@ Use the browser tool to interact with XBVR UI.
 
 ---
 
+## Analysis toolkit (plan-mode-safe, read-only)
+
+When scanning/analyzing the library in plan mode, prefer these inspection commands — they are auto-allowed (no approval needed):
+
+- **`ffprobe`** — video duration, resolution, VR/spherical side-data, and the integrity gate (`moov atom` readable = complete). The primary classify/gate tool.
+- **`jq`** — funscript internals: `.actions|length`, `.actions[-1].at` (duration in ms), `.metadata.title`/`.metadata.creator`. Reveals mismatched/mislabeled scripts and content-duplicates.
+- **`Get-ChildItem` / `Get-Item` / `Test-Path` / `Select-String`** — inventory & content search (covered by the `Get-*` allow rule).
+- **Archive inspection (read-only):** `zipinfo`, `unzip -l`, `unzip -p`, `unrar l`, `unrar p`, `tar -t` — list/read archive entries without extracting. **Always check inside archives** before declaring a script orphaned.
+
+Still require approval (not purely read-only — keep as `ask`): `Invoke-RestMethod` (qBittorrent API), `python` (match scripts), `.NET` file ops. Use them when needed but expect a prompt.
+
 ## Useful Commands
 
 ```python
