@@ -9,8 +9,8 @@
         "apiKey": "sk-dummy"
       },
       "models": {
-        "ling-3.0-flash": {
-          "name": "Ling-3.0-flash 124B-A5.1B (Q5_K_M, MTP)",
+        "qwen3.8-flash-next": {
+          "name": "Qwen3.8-Flash-Next 180B MoE (UD-Q4_K_XL)",
           "tool_call": true,
           "reasoning": true,
           "attachment": false,
@@ -23,8 +23,8 @@
             "output": 32768
           }
         },
-        "qwen3.6-35b-a3b-mtp": {
-          "name": "Qwen3.6-35B-A3B (Q8_K_XL, MTP)",
+        "ling-3.0-flash": {
+          "name": "Ling-3.0-flash 124B-A5.1B (Q5_K_M, MTP)",
           "tool_call": true,
           "reasoning": true,
           "attachment": false,
