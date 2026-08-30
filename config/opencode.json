@@ -10,10 +10,10 @@
       },
       "models": {
         "qwen3.8-flash-next": {
-          "name": "Qwen3.8-Flash-Next 180B MoE (UD-Q4_K_XL)",
+          "name": "Qwen3.8-Flash-Next 180B MoE (ROCmFP4-FAST, MTP, vision)",
           "tool_call": true,
           "reasoning": true,
-          "attachment": false,
+          "attachment": true,
           "cost": {
             "input": 0,
             "output": 0
@@ -27,7 +27,7 @@
           "name": "Ling-3.0-flash 124B-A5.1B (Q5_K_M, MTP)",
           "tool_call": true,
           "reasoning": true,
-          "attachment": false,
+          "attachment": true,
           "cost": {
             "input": 0,
             "output": 0
