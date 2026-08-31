@@ -10,21 +10,7 @@
       },
       "models": {
         "qwen3.8-flash-next": {
-          "name": "Qwen3.8-Flash-Next 180B MoE (ROCmFP4-FAST, MTP, vision)",
-          "tool_call": true,
-          "reasoning": true,
-          "attachment": true,
-          "cost": {
-            "input": 0,
-            "output": 0
-          },
-          "limit": {
-            "context": 262144,
-            "output": 32768
-          }
-        },
-        "ling-3.0-flash": {
-          "name": "Ling-3.0-flash 124B-A5.1B (Q5_K_M, MTP)",
+          "name": "Qwen3.8 Flash",
           "tool_call": true,
           "reasoning": true,
           "attachment": true,
@@ -47,7 +33,7 @@
       },
       "models": {
         "davidau/qwen3.6-27b-fable-fusion-711-uncensored-heretic-nm-dau-neo-max-mtp-gguf/qwen3.6-27b-fable-fus-711-unheretic-nm-dau-neo-max-neo-mtp-q4_k_s.gguf": {
-          "name": "Qwen3.6-27B Heretic Neo-Max (Q4_K_S)",
+          "name": "Qwen3.6 27B Heretic",
           "tool_call": true,
           "reasoning": true,
           "attachment": true,
@@ -61,7 +47,7 @@
           }
         },
         "unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_S.gguf": {
-          "name": "Qwen3.8-27B (Q4_K_S)",
+          "name": "Qwen3.8 27B",
           "tool_call": true,
           "reasoning": true,
           "attachment": true,
