@@ -46,20 +46,6 @@
             "output": 8192
           }
         },
-        "unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-UD-Q4_K_S.gguf": {
-          "name": "Qwen3.8 27B",
-          "tool_call": true,
-          "reasoning": true,
-          "attachment": true,
-          "cost": {
-            "input": 0,
-            "output": 0
-          },
-          "limit": {
-            "context": 262144,
-            "output": 8192
-          }
-        },
       },
     },
   },
