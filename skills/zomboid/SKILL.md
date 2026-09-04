@@ -33,7 +33,10 @@ SQLite: read-only queries work from host python; writes need the root container.
 
 ## Restart Protocol (when permitted)
 
-1. RCON `save` (script below) — graceful stop also saves (`stop_grace_period: 2m`)
+Preferred: `python3 ~/mediaserver/scripts/zomboid-rcon.py restart -m "<reason>" -d 60` (announce → wait → save → restart → verify, see RCON section).
+
+Manual equivalent:
+1. RCON `save` (script above) — graceful stop also saves (`stop_grace_period: 2m`)
 2. `docker compose up -d zomboid` from `~/mediaserver` (recreates on config change; plain `restart` if only sandbox vars changed)
 3. Verify in `docker logs zomboid`:
    - `version=42.20.3` — if it shows anything else, STOP and report
@@ -78,42 +81,14 @@ The `data` blob = Java-serialized IsoPlayer (big-endian ByteBuffer, sequential c
 
 ## RCON
 
-Endpoint `192.168.0.233:27015`, password `ZOMBOID_RCON_PASSWORD` in `.env`. Source-RCON over TCP. Self-contained snippet:
+Endpoint `192.168.0.233:27015`, password `ZOMBOID_RCON_PASSWORD` in `.env`. **Use the wrapper script** — it handles auth, PZ's response-lag quirk, and echo filtering:
 
-```python
-import socket, struct
-def read_env(p="/home/ssuomi/mediaserver/.env"):
-    e={}
-    for l in open(p):
-        l=l.strip()
-        if l and not l.startswith("#") and "=" in l: k,v=l.split("=",1); e[k]=v.strip().strip('"').strip("'")
-    return e
-def pkt(i,t,p):
-    d=struct.pack("<ii",i,t)+p.encode()+b"\x00\x00"; return struct.pack("<i",len(d))+d
-def rpkt(s):
-    ln=b""
-    while len(ln)<4:
-        c=s.recv(4-len(ln))
-        if not c: return None
-        ln+=c
-    (l,)=struct.unpack("<i",ln); b=b""
-    while len(b)<l:
-        c=s.recv(l-len(b))
-        if not c: break
-        b+=c
-    return b[8:-2].decode(errors="replace")
-s=socket.create_connection(("192.168.0.233",27015),timeout=10)
-s.sendall(pkt(1,3,read_env()["ZOMBOID_RCON_PASSWORD"])); print("AUTH" if rpkt(s) is not None else "FAIL")
-s.sendall(pkt(2,2,"save"))          # or any command
-s.settimeout(10)
-try:
-    while True:
-        r=rpkt(s)
-        if not r: break
-        if r.strip(): print("RCON:",r[:300])
-except socket.timeout: pass
-s.close()
 ```
+python3 ~/mediaserver/scripts/zomboid-rcon.py <command>          # any RCON command
+python3 ~/mediaserver/scripts/zomboid-rcon.py restart -m "server restart in ~1 min" -d 60
+```
+
+The `restart` subcommand: shows online players → broadcasts `-m` message in-game (`servermsg`) → waits `-d` seconds (default 60) → `servermsg Restarting now.` → RCON `save` → `docker compose up -d zomboid` (recreates when compose config changed; falls back to `restart` if no-op) → polls container health (≤7 min) → verifies `version=42.20.3` and counts `required mod not found` (exits nonzero on version mismatch).
 
 Known-good commands: `save`, `setaccesslevel <user> <role>`, `showoptions`, `changeoption <name> <value>`, `players`, `servermsg <text>`, `kickuser`, `banuser`, `teleportto <username> x,y,z` (coords COMMA-separated — space-separated args get rejected), `addxp <player> <perk> <xp>`. **Arguments must be unquoted** — `setaccesslevel "user" "admin"` silently no-ops; `setaccesslevel user admin` works. Empty RCON echo usually means unknown command or bad syntax (the usage string comes back in a later packet). No sandbox-var or per-user `changepassword` console commands exist. RCON responses are unreliable for multi-packet outputs (`showoptions` often returns nothing).
 
