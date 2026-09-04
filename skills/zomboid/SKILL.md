@@ -12,6 +12,8 @@ Container `zomboid` in `~/mediaserver/compose.yml` (image `renegademaster/zomboi
 - **Default: NO restart.** Only restart when the user explicitly permits it (e.g. "restart", "restart permitted"). Restarts drop online players.
 - Never run steamcmd `app_update` against the server volume — it would bump 42.20.3 → 42.20.4+ and checksum-kick every downgraded client.
 - Never echo secrets from `.env` (join/RCON/admin passwords). Point the user at `grep ZOMBOID_* ~/mediaserver/.env`.
+- **Anti-cheat policy scale (from bytecode):** `1=Ban, 2=Kick, 3=Log, 4=Disabled`. Do NOT set to 1 thinking it's "log only" — 1 is MAXIMUM enforcement. Setting to 0 is rejected. Current setting: all at 4 (disabled), only SteamVAC active. World resets regenerate INI but anti-cheat changeoption values persist in the INI file — however the runtime may not hot-apply them; a restart after changeoption is the safe pattern.
+- **`setaccesslevel` on an ONLINE player:** the DB updates but the in-memory IsoPlayer keeps the old role until disconnect/reconnect or server restart. A demoted admin who stays online retains admin powers. To force-clear: restart, or ban+unban (ban forcibly disconnects).
 
 ## Paths
 
