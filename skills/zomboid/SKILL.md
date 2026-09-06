@@ -78,6 +78,7 @@ The `data` blob = Java-serialized IsoPlayer (big-endian ByteBuffer, sequential c
 - The running server holds players.db via ONE open connection — a copy-modify-swap (rename+replace) leaves it serving the OLD inode: splices are invisible until restart. Live-inode writes (no rename) keep visibility but hit SQLite locks; retry with busy_timeout, and if even READS lock (hot journal from interrupted save): stop server → scratch-copy db+journal → recover + edit in scratch → swap → start (~4 min routine).
 - Best workflow: player logs out → stop server → splice → start. Every successful splice this session followed a restart.
 - Map exploration: `map_visited_server/<username>.zip` = one fixed-size 4,016,020-byte bitmap; transfer = byte-wise OR union, repack same inner name. Username-keyed → new character on same account inherits automatically.
+- **Homoglyph accounts + POSIX locale trap**: a player registered `Wеbh` (Cyrillic е, U+0435) alongside ASCII `Webh`. The container ran with no `LANG` → JVM `sun.jnu.encoding=ASCII` → `InvalidPathException` in `WorldMapVisitedServer.loadUser` → map fog silently resets for the non-ASCII account (read AND write both fail). Fix: `LANG=C.UTF-8` in the zomboid env (compose) + repack the ASCII account's zip to the Cyrillic name (outer filename AND inner zip entry must match the username exactly). Check for homoglyphs with `repr()` on whitelist usernames — terminals render them identically.
 
 ## RCON
 
