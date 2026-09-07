@@ -51,7 +51,7 @@
   },
   "permission": {
     "webfetch": "allow",
-    "websearch": "allow",
+    "websearch": "deny",
     "external_directory": {
       "**": "allow"
     }
