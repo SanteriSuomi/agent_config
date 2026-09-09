@@ -1,7 +1,7 @@
 ---
 name: web-reader
 description: "Extract clean main content from web pages as markdown using trafilatura (local, no API). Use when reading articles, documentation, or long pages — especially when webfetch output is too noisy (navigation, footers, cookie banners survive) or truncated. NOT for images (use webfetch) or search (use the searxng skill)."
-compatibility: "Requires trafilatura (pip install trafilatura==2.2.0) and python3. Invoke as `python3 -m trafilatura` (Linux) / `python -m trafilatura` (Windows). Zero-install alternative: `uvx trafilatura` if uv is installed."
+compatibility: "Requires trafilatura 2.2.0 (pip install trafilatura==2.2.0). Linux/brew: use the `trafilatura` binary. Windows/pip: `python -m trafilatura`. Zero-install alternative: `uvx trafilatura` if uv is installed."
 license: "MIT"
 metadata:
   version: "1.0.0"
@@ -17,11 +17,14 @@ and images.
 ## Canonical invocation
 
 ```bash
-python3 -m trafilatura --markdown "https://example.com/article"
+trafilatura --markdown -u "https://example.com/article"
 ```
 
+- URLs go via `-u` (positional args are NOT accepted in 2.2.0).
 - Pinned version: **trafilatura==2.2.0** (`pip install trafilatura==2.2.0`).
-- Windows: `python -m trafilatura ...` (same flags).
+- Linux (brew install): use the `trafilatura` binary directly — `python3 -m
+  trafilatura` may not resolve the brew module.
+- Windows (pip install): `python -m trafilatura --markdown -u URL`.
 - Useful flags: `--no-tables` (skip table extraction), `--precision` /
   `--recall` (lean vs aggressive extraction; default is balanced).
 

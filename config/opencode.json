@@ -90,13 +90,6 @@
         "Z_AI_API_KEY": "{file:~/.config/opencode/secrets/z_ai_api_key}",
         "Z_AI_MODE": "ZAI"
       }
-    },
-    "zread": {
-      "type": "remote",
-      "url": "https://api.z.ai/api/mcp/zread/mcp",
-      "headers": {
-        "Authorization": "Bearer {file:~/.config/opencode/secrets/z_ai_api_key}"
-      }
     }
   }
 }
