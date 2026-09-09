@@ -716,7 +716,7 @@ Proceed with fixes? [Yes/No/Review each]
 
 ## XBVR Integration
 
-**URL:** `http://xbvr.home.arpa/ui/` (LAN: `192.168.1.233:9999`)
+**URL:** `http://xbvr.home.arpa/ui/` (LAN: `192.168.0.233:9999`)
 
 **XBVR matching priority:**
 1. Exact SceneID match (e.g., `vrcx-123` in filename)
@@ -747,6 +747,42 @@ Use the browser tool to interact with XBVR UI.
 - **StashDB:** community metadata via fingerprinting (Stash app)
 - **R18/FANZA/DMM:** Japanese content metadata
 - **IAFD:** performer database · **Data18:** scene database
+
+---
+
+## Stash Integration (non-XBVR content)
+
+**Manager + web UI + HereSphere gateway for the 4 non-XBVR categories.** XBVR stays authoritative for studio VR; Stash manages Animations, HMV PMV, Fap Cock Hero, Non-XBVR.
+
+- **Stash web UI:** `http://192.168.0.233:9998` (Tailscale: `100.65.89.53:9998`)
+- **stash-vr (HereSphere/DeoVR API):** `http://192.168.0.233:9666` — add as server in HereSphere on Quest (POST API)
+- **Config:** `/opt/dockerdata/stash` · **Generated:** `/opt/dockerdata/stash/generated` · **Compose services:** `stash` (`stashapp/stash:v0.31.1`), `stash-vr` (`ofl0w/stash-vr:0.9.11`)
+- Media mounted **read-only** at `/data/<Category>` — Stash never renames/moves files
+- **HereSphere sections = Stash saved filters:** the 4 categories (path INCLUDES `/data/<Category>`) + "Scripted only" (interactive)
+- **Funscripts:** paired by exact filename; scenes get `interactive=true`, Stash serves script + heatmap to HereSphere
+- **Handy 2:** connects to HereSphere directly (Synchronized Peripherals → WiFi connection key). No PC bridge.
+- **Two-way sync:** favorites (Stash `FAVORITE` tag), ratings, markers, play history write back — enable "Overwrite tags" etc. in HereSphere cogwheel settings
+
+### After uploading to a managed category
+
+```bash
+# Incremental rescan
+curl -s -X POST http://localhost:9998/graphql -H 'Content-Type: application/json' \
+  -d '{"query":"mutation { metadataScan(input: {}) }"}'
+# Generate covers/previews/heatmaps for new scenes
+curl -s -X POST http://localhost:9998/graphql -H 'Content-Type: application/json' \
+  -d '{"query":"mutation { metadataGenerate(input: { covers: true, sprites: true, previews: true, imagePreviews: true, markers: true, interactiveHeatmapsSpeeds: true }) }"}'
+# Rebuild stash-vr index (picks up new scenes in sections)
+docker restart stash-vr
+```
+
+### Gotchas
+
+- `GET /heresphere` returns a "Loading..." HTML page by design — the player API is `POST /heresphere` (players use POST)
+- Saved filters created via API **must include `find_filter`** and UI-serialized criteria — stash-vr crashes (nil deref) on filters with a raw boolean (`interactive: true` instead of `{"value":"true"}`) or missing `find_filter`
+- HereSphere can't render WEBP images — regenerate covers if thumbnails disappear after scraping
+- Seeking issues in HereSphere → set Encoding dropdown to `direct`
+- VR-converted files in these folders: HereSphere autodetects projection from `_180_SBS` filename tags; add Stash tags (`SBS`, `MKX200`, `RF52`, `DOME`…) only if autodetect fails
 
 ---
 

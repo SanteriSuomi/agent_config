@@ -54,7 +54,13 @@ Global rules for AI agents. Be concise — minimal code, minimal prose, minimal 
 After changes, run in order (fail fast):
 1. Type check → 2. Lint → 3. Unit tests → 4. Integration tests
 
-For browser automation, use the `playwright-cli` skill. Always use named sessions (`-s=<name>`) for isolation when multiple agents may run in parallel.
+**Web/UI/game deliverables are not done until verified in a real browser** — never claim "tested" without executing these steps:
+1. Serve the app with a persistent process via the `pm2` skill (no ad-hoc backgrounded servers)
+2. Drive it with the `playwright-cli` skill: load page, check console for errors, exercise the core user flow (clicks, input, state transitions), screenshot the result
+3. Inspect screenshots visually (vision tool) — confirm the UI actually renders, not just that the DOM exists
+4. Kill the pm2 process when done unless the user wants it kept running
+
+Browser automation rules: always use the `playwright-cli` skill (never raw Playwright scripts), always with named sessions (`-s=<name>`) for isolation when multiple agents may run in parallel.
 
 ## Anti-Patterns
 
@@ -70,6 +76,17 @@ For browser automation, use the `playwright-cli` skill. Always use named session
 **Avoid:** throat-clearing ("In order to..."), emphasis crutches ("significantly"), tripling (always 3 items), AI words (delve, crucial, leverage, utilize, seamless, robust).
 
 **Do:** Be specific, direct, varied rhythm. Have opinions. Acknowledge uncertainty.
+
+## Tool Precedence
+
+Prefer built-in capabilities over MCP servers; fall back to MCP only when the built-in is unavailable or fails:
+
+- **Vision:** read image natively first; only if the model lacks image input use the `zai-vision` MCP tools.
+- **Web search:** `searxng` skill first (self-hosted, no API keys); `web-search-prime` MCP only as fallback. Built-in websearch is disabled (hardwired to hosted Exa/Parallel).
+- **Web reading:** built-in `webfetch` for quick checks and images; `web-reader` skill (trafilatura) for article-class reads needing clean extraction. `web-reader` MCP only as fallback.
+- **GitHub repos:** `gh-repos` skill (gh CLI, always-current); deep source exploration → scout subagent.
+- Shared web-research conventions (source register, date stamping, URL discipline): `references/web-research.md` in this repo.
+- When a built-in attempt fails, say so briefly before using the MCP fallback.
 
 ## Web Search
 
