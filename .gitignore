@@ -30,10 +30,9 @@ desktop.ini
 !.env.example
 *.local
 
-# Clawd context (symlinks to ~/clawd/)
-TOOLS.md
-USER.md
-MEMORY.md
+# Context knowledge base (contains network map, personal data, credentials)
+# NOTE: repo is PUBLIC — do not un-ignore these without checking sensitivity
+context/
 
 # Backup files
 *.bak

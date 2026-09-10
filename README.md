@@ -6,7 +6,8 @@ OpenCode agent configuration. Git repo at `~/agent_config/`, symlinked into `~/.
 
 ```
 ~/agent_config/             # Source of truth (symlinked to ~/.config/opencode/)
-├── AGENTS.md               # Global rules loaded every session
+├── AGENTS.md               # OpenCode entry file (loaded every session)
+├── RULES.md                # Universal rules + context router (shared with Hermes)
 ├── agents/                 # Subagents
 │   └── researcher.md       # Research: docs, APIs, best practices
 ├── skills/                # Auto-loading skills
@@ -15,10 +16,19 @@ OpenCode agent configuration. Git repo at `~/agent_config/`, symlinked into `~/.
 │   ├── pm2/               # Background process management
 │   └── funscript/         # NSFW script/video library organizer
 ├── commands/              # Slash commands (currently empty — scaffolding)
+├── context/               # MiniPC knowledge base (gitignored; see RULES.md router)
+│   ├── network.md, services.md, storage.md, llm.md, media.md
+│   ├── credentials.md     # secrets — never commit
+│   ├── user.md
+│   └── memory/YYYY-MM.md  # append-only incident/change history
 └── config/
     ├── opencode.json      # OpenCode configuration (tracked, no secrets)
     └── opencode.example.json  # Config template (reference)
 ```
+
+## Context files
+
+`context/` holds the Fedora media-server knowledge base (progressive disclosure via the router in AGENTS.md). The whole directory is **gitignored** — it contains the LAN topology, personal context, and credentials. It migrated from the openclaw workspace (`~/clawd/TOOLS.md`, `USER.md`, `MEMORY.md`) on 2026-09-09; agents may edit these files freely (except memory history, append-only).
 
 ## Symlinks
 
@@ -31,15 +41,9 @@ ln -s ~/agent_config/skills ~/.config/opencode/skills
 ln -s ~/agent_config/config/opencode.json ~/.config/opencode/opencode.json
 ```
 
-### Clawd context (one-way, read-only from OpenCode)
+### Clawd context (migrated 2026-09-09)
 
-```bash
-ln -s ~/clawd/TOOLS.md ~/agent_config/TOOLS.md
-ln -s ~/clawd/USER.md ~/agent_config/USER.md
-ln -s ~/clawd/MEMORY.md ~/agent_config/MEMORY.md
-```
-
-These files are owned by Clawdbot (`~/clawd/`). OpenCode reads them on-demand (progressive disclosure) but never writes to them.
+The former clawd symlinks (`TOOLS.md`, `USER.md`, `MEMORY.md`) are gone — content lives in `context/` now (see above). `~/clawd/` originals remain untouched until openclaw is fully decommissioned.
 
 ## Setup
 
@@ -87,4 +91,4 @@ OpenCode's `{env:...}` config syntax reads from the process environment, not `.e
 
 - Agent/skill files are OpenCode format. Both tools ignore unknown frontmatter keys.
 - Commands are flat `.md` files (not `SKILL.md` in subdirectories).
-- Clawd context files (TOOLS.md, USER.md, MEMORY.md) are symlinks — gitignored, read-only from OpenCode.
+- `context/` is gitignored (network topology + credentials + personal data); update files freely per the AGENTS.md router, memory history is append-only.
