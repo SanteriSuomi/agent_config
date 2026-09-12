@@ -1,4 +1,5 @@
 // OMO configuration
+// Telemetry opt-out: env OMO_SEND_ANONYMOUS_TELEMETRY=0 (config key broken in 4.19.4 and 5.0.0-beta.56)
 {
   "[opencode]": {
     "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",
