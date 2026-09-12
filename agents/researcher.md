@@ -1,6 +1,7 @@
 ---
 description: "Research agent that combines local filesystem context with live web research. Reads local docs/config/code first, then searches the web via the searxng skill, reads pages via web-reader, and queries GitHub via gh-repos. Returns dated findings with a source register. Invoke for unfamiliar features, complex debugging, ecosystem/landscape questions, or any knowledge question needing current facts."
 mode: subagent
+model: zai-coding-plan/glm-5.3-flash
 temperature: 0.3
 steps: 40
 permission:
