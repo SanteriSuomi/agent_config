@@ -10,11 +10,17 @@
       "oracle": {
         "model": "zai-coding-plan/glm-5.3"
       },
-      "explore": {
+      "hephaestus": {
         "model": "zai-coding-plan/glm-5.3"
       },
+      "librarian": {
+        "model": "zai-coding-plan/glm-5.3-flash"
+      },
+      "explore": {
+        "model": "zai-coding-plan/glm-5.3-flash"
+      },
       "multimodal-looker": {
-        "model": "zai-coding-plan/glm-4.6v"
+        "model": "zai-coding-plan/glm-5.3-flash"
       },
       "prometheus": {
         "model": "zai-coding-plan/glm-5.3"
@@ -29,12 +35,12 @@
         "model": "zai-coding-plan/glm-5.3"
       },
       "sisyphus-junior": {
-        "model": "zai-coding-plan/glm-5.3"
+        "model": "zai-coding-plan/glm-5.3-flash"
       }
     },
     "categories": {
       "visual-engineering": {
-        "model": "zai-coding-plan/glm-5.3"
+        "model": "zai-coding-plan/glm-5.3-flash"
       },
       "ultrabrain": {
         "model": "zai-coding-plan/glm-5.3"
@@ -46,10 +52,10 @@
         "model": "zai-coding-plan/glm-5.3"
       },
       "quick": {
-        "model": "zai-coding-plan/glm-5.3"
+        "model": "zai-coding-plan/glm-5.3-flash"
       },
       "unspecified-low": {
-        "model": "zai-coding-plan/glm-5.3"
+        "model": "zai-coding-plan/glm-5.3-flash"
       },
       "unspecified-high": {
         "model": "zai-coding-plan/glm-5.3"
