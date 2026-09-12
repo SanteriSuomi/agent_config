@@ -9,7 +9,7 @@
         "apiKey": "lm-studio"
       },
       "models": {
-        "agentionai/Signal-3.8-27B-GGUF": {
+        "agentionai/Signal-3.8-27B-AP-Q4_K_M.gguf": {
           "name": "Signal 3.8 27B",
           "tool_call": true,
           "reasoning": true,

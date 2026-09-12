@@ -6,6 +6,9 @@
     "browser_automation_engine": {
       "provider": "playwright-cli"
     },
+    "disabled_mcps": [
+      "websearch"
+    ],
     "agents": {
       "sisyphus": {
         "model": "zai-coding-plan/glm-5.3"
@@ -32,10 +35,10 @@
         "model": "zai-coding-plan/glm-5.3"
       },
       "momus": {
-        "model": "zai-coding-plan/glm-5.3"
+        "model": "zai-coding-plan/glm-5.3-flash"
       },
       "atlas": {
-        "model": "zai-coding-plan/glm-5.3"
+        "model": "zai-coding-plan/glm-5.3-flash"
       },
       "sisyphus-junior": {
         "model": "zai-coding-plan/glm-5.3-flash"
