@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "llama-server/qwen3.8-flash-next",
+  "model": "llama-server-windows/qwen3.8-flash-next",
   "permission": {
     "webfetch": "allow",
     "websearch": "deny",

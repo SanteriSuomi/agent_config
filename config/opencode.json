@@ -2,10 +2,33 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "zai-coding-plan/glm-5.3",
   "provider": {
-    "llama-server": {
-      "name": "llama-server (local)",
+    "llama-server-windows": {
+      "name": "llama-server (windows)",
       "options": {
-        "baseURL": "http://localhost:8520/v1",
+        "baseURL": "http://192.168.0.200:8520/v1",
+        "apiKey": "sk-dummy"
+      },
+      "models": {
+        "qwen3.8-flash-next": {
+          "name": "Qwen3.8 Flash",
+          "tool_call": true,
+          "reasoning": true,
+          "attachment": true,
+          "cost": {
+            "input": 0,
+            "output": 0
+          },
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          }
+        }
+      }
+    },
+    "llama-server-linux": {
+      "name": "llama-server (linux)",
+      "options": {
+        "baseURL": "http://192.168.0.233:8520/v1",
         "apiKey": "sk-dummy"
       },
       "models": {
@@ -45,9 +68,9 @@
             "context": 262144,
             "output": 8192
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
   "permission": {
     "webfetch": "allow",
@@ -63,5 +86,8 @@
     "plan": {
       "permission": "allow"
     }
-  }
+  },
+  "plugin": [
+    "oh-my-openagent@latest"
+  ]
 }
