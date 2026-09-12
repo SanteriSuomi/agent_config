@@ -2,11 +2,11 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "zai-coding-plan/glm-5.3",
   "provider": {
-    "llama-server-windows": {
-      "name": "llama-server (windows)",
+    "bionic-windows": {
+      "name": "bionic (windows)",
       "options": {
-        "baseURL": "http://192.168.0.200:8520/v1",
-        "apiKey": "sk-dummy"
+        "baseURL": "http://192.168.0.200:1234/v1",
+        "apiKey": "lm-studio"
       },
       "models": {
         "qwen3.8-flash-next": {
@@ -21,6 +21,20 @@
           "limit": {
             "context": 262144,
             "output": 32768
+          }
+        },
+        "davidau/qwen3.6-27b-fable-fusion-711-uncensored-heretic-nm-dau-neo-max-mtp-gguf/qwen3.6-27b-fable-fus-711-unheretic-nm-dau-neo-max-neo-mtp-q4_k_s.gguf": {
+          "name": "Qwen3.6 27B Heretic",
+          "tool_call": true,
+          "reasoning": true,
+          "attachment": true,
+          "cost": {
+            "input": 0,
+            "output": 0
+          },
+          "limit": {
+            "context": 262144,
+            "output": 8192
           }
         }
       }
@@ -44,29 +58,6 @@
           "limit": {
             "context": 262144,
             "output": 32768
-          }
-        }
-      }
-    },
-    "lmstudio": {
-      "name": "LMStudio (local)",
-      "options": {
-        "baseURL": "http://localhost:1234/v1",
-        "apiKey": "lm-studio"
-      },
-      "models": {
-        "davidau/qwen3.6-27b-fable-fusion-711-uncensored-heretic-nm-dau-neo-max-mtp-gguf/qwen3.6-27b-fable-fus-711-unheretic-nm-dau-neo-max-neo-mtp-q4_k_s.gguf": {
-          "name": "Qwen3.6 27B Heretic",
-          "tool_call": true,
-          "reasoning": true,
-          "attachment": true,
-          "cost": {
-            "input": 0,
-            "output": 0
-          },
-          "limit": {
-            "context": 262144,
-            "output": 8192
           }
         }
       }

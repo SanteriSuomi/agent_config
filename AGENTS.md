@@ -27,7 +27,7 @@ OpenCode entry file. **Universal behavioral rules live in `RULES.md` (same direc
 
 Prefer built-in capabilities over MCP servers; fall back to MCP only when the built-in is unavailable or fails:
 
-- **Vision:** read images natively via the llama-server-windows (or llama-server-linux) model currently running (mmproj attached, `attachment: true`). If the active model is text-only (e.g. lmstudio), switch to a llama-server model for image work. No external vision APIs.
+- **Vision:** read images natively via the bionic-windows (or llama-server-linux) model currently running (mmproj attached, `attachment: true`). If the active model is text-only, switch to a bionic-windows/llama-server-linux model for image work. No external vision APIs.
 - **Web search:** `searxng` skill first (self-hosted, no API keys); `web-search-prime` MCP only as fallback. Built-in websearch is disabled (hardwired to hosted Exa/Parallel).
 - **Web reading:** built-in `webfetch` for quick checks and images; `web-reader` skill (trafilatura) for article-class reads needing clean extraction. `web-reader` MCP only as fallback.
 - **GitHub repos:** `gh-repos` skill (gh CLI, always-current); deep source exploration → scout subagent.
