@@ -48,12 +48,7 @@ The former clawd symlinks (`TOOLS.md`, `USER.md`, `MEMORY.md`) are gone — cont
 ## Setup
 
 1. **Clone** this repo to `~/agent_config/`
-2. **Create** the secrets file for MCP server auth (`config/opencode.json` references it via `{file:...}`):
-   ```bash
-   mkdir -p ~/.config/opencode/secrets
-   echo "your_zai_api_key" > ~/.config/opencode/secrets/z_ai_api_key
-   ```
-   Get your [Z.AI API key](https://z.ai/manage-apikey/apikey-list) (for MCP servers: search, reader, vision, zread). Adjust the local provider URL in `config/opencode.json` if needed (or remove the `provider` block).
+2. No API keys required for the core setup — web search/reading and GitHub research run through local skills (see `skills/searxng`, `skills/web-reader`, `skills/gh-repos`). Adjust the local provider URL in `config/opencode.json` if needed (or remove the `provider` block).
 3. **Copy** the env template for skills that need direct API access:
    ```bash
    cp .env.example .env
