@@ -3,6 +3,9 @@
 {
   "[opencode]": {
     "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/omo.schema.json",
+    "browser_automation_engine": {
+      "provider": "playwright-cli"
+    },
     "agents": {
       "sisyphus": {
         "model": "zai-coding-plan/glm-5.3"
