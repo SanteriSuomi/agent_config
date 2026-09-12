@@ -1,7 +1,7 @@
 ---
 name: searxng
 description: "Search the live web via the self-hosted SearXNG instance (private, no API keys). Use when a task needs current information, recent releases or news, version checks, or web verification beyond training data. NOT for local codebase questions (use grep/glob) or GitHub repo research (use the gh-repos skill)."
-compatibility: "Requires curl (native on Windows 10+/Linux) and python3. Instance reachable at https://searxng.home.arpa on the LAN (Fedora host); from other machines use the host LAN IP if the .home.arpa name does not resolve."
+compatibility: "Requires curl (native on Windows 10+/Linux) and python3. Instance reachable at http://searxng.home.arpa (plain HTTP — TLS removed; LAN/Tailscale-only network) on the Fedora host; from other machines use the host LAN IP (http://192.168.0.233) if the .home.arpa name does not resolve."
 license: "MIT"
 metadata:
   version: "1.0.0"
@@ -16,7 +16,7 @@ instance's fingerprinted requests, not the agent's).
 ## Canonical invocation
 
 ```bash
-curl -sk -G "https://searxng.home.arpa/search" \
+curl -sk -G "http://searxng.home.arpa/search" \
   --data-urlencode "q=YOUR QUERY HERE" \
   --data-urlencode "format=json" | python3 -c "
 import json,sys
