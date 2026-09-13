@@ -1,7 +1,7 @@
 ---
 name: searxng
 description: "Search the live web via the self-hosted SearXNG instance (private, no API keys). Use when a task needs current information, recent releases or news, version checks, or web verification beyond training data. NOT for local codebase questions (use grep/glob) or GitHub repo research (use the gh-repos skill)."
-compatibility: "Requires curl (native on Windows 10+/Linux) and python3. Instance reachable at http://searxng.home.arpa (plain HTTP — TLS removed; LAN/Tailscale-only network) on the Fedora host; from other machines use the host LAN IP (http://192.168.0.233) if the .home.arpa name does not resolve."
+compatibility: "Requires curl (native on Windows 10+/Linux). No Python needed — agents parse the JSON response natively; jq is optional for trimming large responses. Instance reachable at http://searxng.home.arpa (plain HTTP — TLS removed; LAN/Tailscale-only network) on the Fedora host; from other machines use the host LAN IP (http://192.168.0.233) if the .home.arpa name does not resolve."
 license: "MIT"
 metadata:
   version: "1.0.0"
@@ -16,16 +16,22 @@ instance's fingerprinted requests, not the agent's).
 ## Canonical invocation
 
 ```bash
-curl -sk -G "http://searxng.home.arpa/search" \
+curl -s -G "http://searxng.home.arpa/search" \
   --data-urlencode "q=YOUR QUERY HERE" \
-  --data-urlencode "format=json" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-for r in d.get('results',[])[:10]:
-    print(r.get('title','')[:90]); print('  '+r.get('url',''))
-    print('  '+(r.get('content') or '')[:180])
-for ib in d.get('infoboxes',[]):
-    print('INFOBOX:', ib.get('infobox'), '-', str(ib.get('content',''))[:300])"
+  --data-urlencode "format=json"
+```
+
+Read the JSON directly: `results[]` (title/url/content) and `infoboxes[]`
+(wikipedia lands there by design). Self-trim — don't dump more than needed
+into context.
+
+For very large responses, trim with jq instead of reading raw:
+
+```bash
+curl -s -G "http://searxng.home.arpa/search" \
+  --data-urlencode "q=YOUR QUERY HERE" \
+  --data-urlencode "format=json" |
+jq -r '(.results[:10][] | "* \(.title)\n  \(.url)\n  \((.content // "")[0:160])"), (.infoboxes[]? | "INFOBOX: \(.infobox) - \((.content // "") | tostring | .[0:280])")'
 ```
 
 Notes:
@@ -33,7 +39,7 @@ Notes:
   queries with spaces/special chars.
 - Parse **both** `results` and `infoboxes` — wikipedia results land in
   `infoboxes[]` by design (display_type: infobox).
-- On Windows Git Bash this works as-is (`python3` or `python`).
+- On Windows PowerShell, `ConvertFrom-Json` works if jq is unavailable.
 
 ## Useful parameters
 
