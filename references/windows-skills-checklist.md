@@ -16,9 +16,8 @@ curl --version
 # 3. gh installed + authenticated (gh-repos skill)
 gh auth status          # install: winget install GitHub.cli, then gh auth login
 
-# 4. trafilatura installed (web-reader skill)
-python --version        # install Python from python.org if missing
-pip install trafilatura==2.2.0
+# 4. web-reader skill: uvx is the Windows path (no system Python)
+uvx trafilatura --markdown -u "https://opencode.ai/docs/skills/" | Measure-Object -Word
 ```
 
 ## Functional checks
@@ -26,12 +25,11 @@ pip install trafilatura==2.2.0
 ```powershell
 # searxng skill: JSON result count should be > 0 (use LAN IP if the
 # .home.arpa name does not resolve from this host)
-curl -sk -G "https://searxng.home.arpa/search" --data-urlencode "q=test" --data-urlencode "format=json"
-# fallback URL form: https://<miniPC-LAN-IP>/search?q=...&format=json
-# (accept the self-signed cert with -k)
+curl -s -G "http://searxng.home.arpa/search" --data-urlencode "q=test" --data-urlencode "format=json"
+# fallback URL form: http://<miniPC-LAN-IP>/search?q=...&format=json
 
 # web-reader skill: expect markdown word count > 0
-python -m trafilatura --markdown -u "https://opencode.ai/docs/skills/"
+uvx trafilatura --markdown -u "https://opencode.ai/docs/skills/"
 
 # gh-repos skill: expect a tag name in output
 gh api repos/ggml-org/llama.cpp/releases/latest --jq .tag_name
@@ -49,9 +47,10 @@ mirrors the repo and that the session started after the sync.
 
 ## Notes
 
-- Windows shell for opencode bash-tool is Git Bash: `curl`, `python`,
-  `gh` all work; use `python` (not `python3`).
+- The opencode bash tool runs PowerShell 7 (`pwsh`) on this host — `curl.exe`,
+  `uvx`, `gh` all work; there is no system `python`/`python3` (use `uvx`).
 - If `searxng.home.arpa` does not resolve, either add the host to the
   network DNS or use the MiniPC LAN IP in the skill URL.
 - Built-in websearch is globally denied (`permission.websearch: deny` in
-  opencode.json) — search must go through the searxng skill or MCP fallback.
+  opencode.json) and the former z.ai MCP fallbacks are removed — search goes
+  through the searxng skill or not at all.

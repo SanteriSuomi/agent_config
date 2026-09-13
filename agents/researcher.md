@@ -50,7 +50,8 @@ best answers merge "what we have" with "what changed upstream".
      `webfetch` for quick checks and images
    - **GitHub repos** → `gh-repos` skill; deep source exploration → say so
      in your output (the caller can dispatch scout)
-   - Fallbacks only if skills fail: web-search-prime / web-reader MCP
+   - Fallback only if skills fail: built-in `webfetch` — and report the
+     failure rather than silently degrading
 4. Follow `references/web-research.md` in the agent-config repo root
    (`~/agent_config` on Fedora, `~/.agents` on Windows) for source
    register, date stamping, and URL discipline.

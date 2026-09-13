@@ -12,7 +12,7 @@ OpenCode entry file. **Universal behavioral rules live in `RULES.md` (same direc
 ├── skills/                 # Auto-loading skills: playwright-cli, context7-api, pm2, funscript, searxng, web-reader, gh-repos, zomboid
 ├── commands/               # Slash commands (currently empty — scaffolding)
 ├── context/                # Shared knowledge base (see Context Router in RULES.md)
-└── config/                 # Tool configs: opencode.json (MCP servers, providers)
+└── config/                 # Tool configs: opencode.json (providers, plugin), omo.jsonc
 ```
 
 > On Windows the source-of-truth dir is `~/.agents/` instead of `~/agent_config/`; symlink layout into `~/.config/opencode/` is identical.
@@ -28,8 +28,8 @@ OpenCode entry file. **Universal behavioral rules live in `RULES.md` (same direc
 Prefer built-in capabilities over MCP servers; fall back to MCP only when the built-in is unavailable or fails:
 
 - **Vision:** read images natively via the bionic-windows (or llama-server-linux) model currently running (mmproj attached, `attachment: true`). If the active model is text-only, switch to a bionic-windows/llama-server-linux model for image work. No external vision APIs.
-- **Web search:** `searxng` skill first (self-hosted, no API keys); `web-search-prime` MCP only as fallback. Built-in websearch is disabled (hardwired to hosted Exa/Parallel).
-- **Web reading:** built-in `webfetch` for quick checks and images; `web-reader` skill (trafilatura) for article-class reads needing clean extraction. `web-reader` MCP only as fallback.
+- **Web search:** `searxng` skill (self-hosted, no API keys) — the only search path; built-in websearch is disabled (hardwired to hosted Exa/Parallel) and the former web-search-prime MCP is removed. If searxng is down, say so — no silent fallback.
+- **Web reading:** built-in `webfetch` for quick checks and images; `web-reader` skill (trafilatura via uvx) for article-class reads needing clean extraction. No MCP fallback (removed).
 - **GitHub repos:** `gh-repos` skill (gh CLI, always-current); deep source exploration → scout subagent.
 - Shared web-research conventions (source register, date stamping, URL discipline): `references/web-research.md` in this repo.
 - When a built-in attempt fails, say so briefly before using the MCP fallback.

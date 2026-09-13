@@ -31,8 +31,7 @@ gh api "repos/OWNER/REPO/git/trees/HEAD?recursive=1" \
   --jq '.tree[] | select(.type=="blob") | .path' | head -50
 
 # Read a file (decoded)
-gh api "repos/OWNER/REPO/contents/PATH/TO/FILE" --jq '.content' \
-  | python3 -c "import base64,sys; print(base64.b64decode(sys.stdin.read()).decode())"
+gh api "repos/OWNER/REPO/contents/PATH/TO/FILE" --jq '.content | @base64d'
 
 # Latest release
 gh api repos/OWNER/REPO/releases/latest \

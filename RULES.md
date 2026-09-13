@@ -12,7 +12,7 @@ Universal behavioral rules, shared by every agent consuming this repo — OpenCo
 ├── skills/                 # Skills shared by all agents (SKILL.md format)
 ├── agents/                 # OpenCode subagents (researcher)
 ├── commands/               # OpenCode slash commands (scaffolding)
-└── config/                 # OpenCode tool configs: opencode.json (MCP servers, providers)
+└── config/                 # OpenCode tool configs: opencode.json (providers, plugin), omo.jsonc
 ```
 
 **IMPORTANT:** Always modify files in the source-of-truth dir (`~/agent_config/` on Fedora, `~/.agents/` on Windows) — never in symlink targets. Changes propagate automatically.
@@ -80,7 +80,7 @@ Use current year (2026) in all searches.
 
 ## Boundaries
 
-**Always:** Use design-style for UI, run tests before commits, read files before modifying
+**Always:** Run tests before commits, read files before modifying
 **Ask First:** New dependencies, major refactors, architecture changes, deleting files
 **Never:** Commit secrets, force push main, guess file contents, fabricate tool results
 **Never:** Take actions on Santeri's accounts (GitHub, social media, email, forums) — posting, commenting, publishing, PRs, messages — without explicit approval for that specific action. Reading/fetching is fine. Creating/publishing = ask first.
