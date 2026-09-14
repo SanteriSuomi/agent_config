@@ -9,6 +9,13 @@
     "disabled_mcps": [
       "websearch"
     ],
+    // Live-listener parent-wake dispatch is a silent no-op under TUI-in-tmux/SSH
+    // (opencode 1.18.30 + OmO 5.0.0-beta.62): dispatched wake never creates a
+    // session prompt, retries coalesce-drop, "Stopped retrying parent wake after
+    // repeated no-output dispatch". Force the in-process client route instead.
+    "experimental": {
+      "disable_live_parent_wake_routing": true
+    },
     "agents": {
       "sisyphus": {
         "model": "zai-coding-plan/glm-5.3"
