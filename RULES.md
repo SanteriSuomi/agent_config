@@ -26,7 +26,7 @@ Universal behavioral rules, shared by every agent consuming this repo — OpenCo
 - Types must accurately reflect reality (optional fields should be `?`, nullable fields should include `| null`)
 - Omit explicit return types unless needed for clarity or compiler requirements
 - Pin exact dependency versions: `"1.8.0"` not `"^1.8.0"`. Let lockfiles handle reproducibility.
-- Pin exact versions in Dockerfiles and install scripts (e.g. `ansible-core==2.20.4`, `sops-v3.13.1`). Verify latest stable version via web search before pinning.
+- Pin exact versions in Dockerfiles and install scripts (e.g. `ansible-core==2.20.4`, `sops-v3.13.1`). Verify against the live registry/web before pinning — plans and docs cite versions that may not actually exist.
 
 ## Comments
 
@@ -45,6 +45,7 @@ Universal behavioral rules, shared by every agent consuming this repo — OpenCo
 
 - Prefer `git pull --rebase` over `git pull` to avoid merge commits
 - **One agent = one worktree.** Never let two agents edit the same checkout concurrently; create a worktree before touching a shared repo from a second agent.
+- **Repos may carry the user's unrelated uncommitted changes.** Commit ONLY your hunks — extract your diff and `git apply --cached` it; never commit, revert, stash, or "clean" changes you didn't make.
 
 ## Testing
 
@@ -58,6 +59,14 @@ After changes, run in order (fail fast):
 4. Kill the pm2 process when done unless the user wants it kept running
 
 Browser automation rules: always use the `playwright-cli` skill (never raw Playwright scripts), always with named sessions (`-s=<name>`) for isolation when multiple agents may run in parallel.
+
+More hard rules (learned the hard way):
+
+- **Assertion specs green ≠ visually correct.** After any UI change, walk the changed screens at 390×844 AND a tall viewport (360×960) and LOOK at the screenshots — off-screen popups, clipped cards behind fixed bars, both buttons doing the same thing, and forced camera capture only show up when you actually look.
+- **Iterative development runs in the project's dev mode** (dev script kept alive via `pm2`), never by rebuilding/redeploying production containers per change.
+- **Flaky-looking failure under parallel load?** Re-run it serially before touching code — concurrent builds/E2E cause timing flakes that vanish when run alone. Serialize docker builds and other CPU-heavy tasks; they saturate the machine and starve sibling processes.
+- **Tests/scripts must never assert global system state** (bare `pgrep`/`pkill` patterns, fixed global ports) — parallel runs collide and kill each other's processes; scope patterns with per-run unique tags.
+- **A worker/subagent's done-report is a lead, not evidence** — re-verify the claim against the real surface (run the commands, look at the output) before calling work done.
 
 ## Anti-Patterns
 
@@ -84,6 +93,16 @@ Use current year (2026) in all searches.
 **Ask First:** New dependencies, major refactors, architecture changes, deleting files
 **Never:** Commit secrets, force push main, guess file contents, fabricate tool results
 **Never:** Take actions on Santeri's accounts (GitHub, social media, email, forums) — posting, commenting, publishing, PRs, messages — without explicit approval for that specific action. Reading/fetching is fine. Creating/publishing = ask first.
+
+## Rule Maintenance (self-applying)
+
+When you learn a lesson the hard way — a bug class, a verification gap, a tooling footgun — route it by scope immediately; do not wait to be asked:
+
+- **Globally transferable** (would matter on a different project, environment, or stack next month — e.g. "assertion tests green ≠ visually correct") → append ONE line here, imperative, no story.
+- **Project-specific** (commands, conventions, architecture) → that project's own AGENTS.md/context file, never here.
+- **Dated incidents/state** → `context/memory/YYYY-MM.md` (append-only).
+
+This file loads every session: every line costs context in ALL future sessions. Keep it lean — sharpen an existing line instead of adding a near-duplicate, and hold a high bar: "annoying once" is not "globally important". Promote a project-local rule here only when it repeats across projects.
 
 ## Context Router (MiniPC only — read on demand, not at session start)
 
