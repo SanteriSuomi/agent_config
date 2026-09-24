@@ -19,8 +19,8 @@
             "output": 0
           },
           "limit": {
-            "context": 262144,
-            "output": 32768
+            "context": 32768,
+            "output": 8192
           }
         }
       }
@@ -32,7 +32,7 @@
         "apiKey": "sk-dummy"
       },
       "models": {
-        "qwen3.8-flash-next": {
+        "Qwen3.8 Flash Next": {
           "name": "Qwen3.8 Flash",
           "tool_call": true,
           "reasoning": true,
@@ -42,8 +42,8 @@
             "output": 0
           },
           "limit": {
-            "context": 262144,
-            "output": 32768
+            "context": 32768,
+            "output": 8192
           }
         }
       }
