@@ -37,3 +37,10 @@ Prefer built-in capabilities over MCP servers; fall back to MCP only when the bu
 ## Context Management
 
 Use subagents for exploration and research — do not consume main context with discovery work. **Explore agent** for codebase navigation, **researcher agent** for web searches, documentation, and API references. Only run grep/glob/websearch directly when the query is trivial (single file, known path) or needed immediately for an in-progress decision.
+
+## Launch Modes (OMO profiles)
+
+- `oc` → plain `opencode`: default agent routing (cloud — glm-5.3 heavy / glm-5.3-flash light agents; pins in `config/omo.jsonc` base).
+- `ocl` → `OMO_PROFILE=local opencode`: **all** OMO agents + task categories route to `llama-server-linux/Qwen3.8 Flash Next` (local gufo engine; vision-capable). Profile = `profiles.local` in `config/omo.jsonc`.
+- Profile selection is env-only (`OMO_PROFILE` / `OCX_PROFILE` / config-dir tail) — it cannot follow the main model automatically. Aliases live in the MiniPC `~/.bashrc`.
+- The run header shows the active model (`· Qwen3.8 Flash Next` vs `· glm-5.3`). If the local model id ever changes, update `profiles.local` pins (11 agents + 8 categories).
