@@ -77,5 +77,36 @@
         "model": "zai-coding-plan/glm-5.3"
       }
     }
+  },
+  "profiles": {
+    // Activated with OMO_PROFILE=local (env) — routes ALL agents/categories to the
+    // local gufo engine (llama-server-linux). Default (no profile) = cloud routing above.
+    "local": {
+      "[opencode]": {
+        "agents": {
+          "sisyphus": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "oracle": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "hephaestus": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "prometheus": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "metis": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "librarian": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "explore": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "multimodal-looker": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "momus": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "atlas": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "sisyphus-junior": { "model": "llama-server-linux/Qwen3.8 Flash Next" }
+        },
+        "categories": {
+          "visual-engineering": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "ultrabrain": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "deep": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "artistry": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "quick": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "unspecified-low": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "unspecified-high": { "model": "llama-server-linux/Qwen3.8 Flash Next" },
+          "writing": { "model": "llama-server-linux/Qwen3.8 Flash Next" }
+        }
+      }
+    }
   }
 }
