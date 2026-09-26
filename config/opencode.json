@@ -46,7 +46,8 @@
             "output": 8192
           }
         }
-      }
+      },
+      "npm": "@ai-sdk/openai-compatible"
     }
   },
   "permission": {
